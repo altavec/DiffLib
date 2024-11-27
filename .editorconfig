@@ -144,3 +144,5 @@ dotnet_style_prefer_conditional_expression_over_assignment = true:silent
 dotnet_style_prefer_conditional_expression_over_return = true:silent
 dotnet_style_explicit_tuple_names = true:warning
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
+
+MA0051.skip_local_functions = true # skip local functions when counting statements

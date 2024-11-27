@@ -7,6 +7,7 @@ namespace DiffLib;
 /// <summary>
 /// This struct holds a section of matched or unmatch element portions from the two collectoins.
 /// </summary>
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 public readonly struct DiffSection : IEquatable<DiffSection>
 {
     /// <summary>

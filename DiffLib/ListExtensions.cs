@@ -94,7 +94,7 @@ public static class ListExtensions
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new InvalidOperationException();
             }
         }
     }

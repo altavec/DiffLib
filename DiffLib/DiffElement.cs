@@ -7,9 +7,8 @@ namespace DiffLib;
 /// <summary>
 /// This struct holds a single aligned element from the two collections given to <see cref="Diff.AlignElements{T}"/>.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements from the two collections compared.
-/// </typeparam>
+/// <typeparam name="T">The type of elements from the two collections compared.</typeparam>
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
 {
     /// <summary>

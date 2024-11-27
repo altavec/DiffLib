@@ -8,6 +8,7 @@ namespace DiffLib;
 /// This type functions similar to <see cref="Nullable{T}"/> except that it can hold any type of value and is used for situations where you may or may not have a value.
 /// </summary>
 /// <typeparam name="T">The type of option.</typeparam>
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 {
     private readonly T value;

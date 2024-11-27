@@ -4,6 +4,7 @@
 
 namespace DiffLib;
 
+[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
 internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
 {
     public AlignmentKey(int position1, int position2)

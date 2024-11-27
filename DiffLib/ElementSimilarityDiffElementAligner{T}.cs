@@ -106,7 +106,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
                         break;
 
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new InvalidOperationException();
                 }
             }
 

@@ -47,14 +47,14 @@ internal class Merge<T> : IEnumerable<T?>
 
         this.conflictResolver = conflictResolver ?? throw new ArgumentNullException(nameof(conflictResolver));
 
-        var diffCommonBaseToLeft = Diff.AlignElements(commonBase, left, Diff.CalculateSections(commonBase, left, diffOptions, comparer), aligner).ToList();
-        this.diffCommonBaseToLeft = diffCommonBaseToLeft;
+        var commonBaseToLeft = Diff.AlignElements(commonBase, left, Diff.CalculateSections(commonBase, left, diffOptions, comparer), aligner).ToList();
+        this.diffCommonBaseToLeft = commonBaseToLeft;
 
-        var diffCommonBaseToRight = Diff.AlignElements(commonBase, right, Diff.CalculateSections(commonBase, right, diffOptions, comparer), aligner).ToList();
-        this.diffCommonBaseToRight = diffCommonBaseToRight;
+        var commonBaseToRight = Diff.AlignElements(commonBase, right, Diff.CalculateSections(commonBase, right, diffOptions, comparer), aligner).ToList();
+        this.diffCommonBaseToRight = commonBaseToRight;
 
-        var mergeSections = Diff.CalculateSections(diffCommonBaseToLeft!, diffCommonBaseToRight!, diffOptions, new DiffSectionMergeComparer<T>(comparer)).ToList();
-        this.mergeSections = mergeSections;
+        var sections = Diff.CalculateSections(commonBaseToLeft, commonBaseToRight, diffOptions, new DiffSectionMergeComparer<T>(comparer)).ToList();
+        this.mergeSections = sections;
     }
 
     public IEnumerator<T?> GetEnumerator()
@@ -153,67 +153,35 @@ internal class Merge<T> : IEnumerable<T?>
 
     private IEnumerable<T?> GetResolution(T? commonBase, DiffOperation leftOp, T? leftSide, DiffOperation rightOp, T? rightSide)
     {
-        switch (leftOp)
+        return (leftOp, rightOp) switch
         {
-            case DiffOperation.Match:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [leftSide];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return [];
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return [rightSide];
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
+            (DiffOperation.Match, DiffOperation.Match) => [leftSide],
+            (DiffOperation.Match, DiffOperation.Insert) => ThrowMergeConflictException(),
+            (DiffOperation.Match, DiffOperation.Delete) => [],
+            (DiffOperation.Match, DiffOperation.Replace or DiffOperation.Modify) => [rightSide],
+            (DiffOperation.Match, _) => ThrowArgumentOutOfRangeException(),
+            (DiffOperation.Insert, _) => ThrowMergeConflictException(),
+            (DiffOperation.Delete, DiffOperation.Match) => [],
+            (DiffOperation.Delete, DiffOperation.Insert) => ThrowMergeConflictException(),
+            (DiffOperation.Delete, DiffOperation.Delete) => [],
+            (DiffOperation.Delete, DiffOperation.Replace or DiffOperation.Modify) => this.conflictResolver.Resolve([commonBase], [], [rightSide]),
+            (DiffOperation.Delete, _) => ThrowArgumentOutOfRangeException(),
+            (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Match) => [leftSide],
+            (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Insert) => ThrowMergeConflictException(),
+            (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Delete) => this.conflictResolver.Resolve([commonBase], [leftSide], []),
+            (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Replace or DiffOperation.Modify) => this.conflictResolver.Resolve([commonBase], [leftSide], [rightSide]),
+            (DiffOperation.Replace or DiffOperation.Modify, _) => ThrowArgumentOutOfRangeException(),
+            _ => ThrowMergeConflictException(),
+        };
 
-                break;
-
-            case DiffOperation.Insert:
-                break;
-
-            case DiffOperation.Delete:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return [];
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return this.conflictResolver.Resolve([commonBase], [], [rightSide]);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
-
-                break;
-
-            case DiffOperation.Replace:
-            case DiffOperation.Modify:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [leftSide];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return this.conflictResolver.Resolve([commonBase], [leftSide], []);
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return this.conflictResolver.Resolve([commonBase], [leftSide], [rightSide]);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
-
-                break;
+        IEnumerable<T?> ThrowMergeConflictException()
+        {
+            throw new MergeConflictException($"Unable to process {leftOp} vs. {rightOp}", [commonBase], [leftSide], [rightSide]);
         }
 
-        throw new MergeConflictException($"Unable to process {leftOp} vs. {rightOp}", [commonBase], [leftSide], [rightSide]);
+        IEnumerable<T?> ThrowArgumentOutOfRangeException()
+        {
+            throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, message: null);
+        }
     }
 }
