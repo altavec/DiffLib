@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net472</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0;net472</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <Copyright>Copyright (C) Lasse V. Karlsen 2015, All rights reversed</Copyright>
+    <Copyright>Copyright (C) Lasse V. Karlsen 2015, Altavec 2024, All rights reversed</Copyright>
     <Description>Unit-tests for DiffLib</Description>
     <Product>DiffLib</Product>
 

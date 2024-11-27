@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard1.0;net461;net45</TargetFrameworks>
     <Description>A Diff implementation for .NET Standard 1.0 and up, written in C#.</Description>
-    <Copyright>Copyright (C) Lasse V. Karlsen 2015-2017, All rights reserved</Copyright>
+    <Copyright>Copyright (C) Lasse V. Karlsen 2015-2017, Altavec 2024, All rights reserved</Copyright>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -26,7 +26,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Product>DiffLib</Product>
-    <Authors>Lasse V. Karlsen</Authors>
+    <Authors>lassevk rsking</Authors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
