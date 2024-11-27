@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-
 namespace DiffLib
 {
     /// <summary>
@@ -41,7 +37,6 @@ namespace DiffLib
         /// <para>- or -</para>
         /// <para><paramref name="collection2"/> is <c>null</c>.</para>
         /// </exception>
-        [NotNull]
-        IEnumerable<DiffElement<T>> Align([NotNull] IList<T> collection1, int start1, int length1, [NotNull] IList<T> collection2, int start2, int length2);
+        IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2);
     }
 }

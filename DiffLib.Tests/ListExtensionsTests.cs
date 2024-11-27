@@ -15,13 +15,13 @@ namespace DiffLib.Tests
         [Test]
         public void Mutate_NullTarget_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => ListExtensions.MutateToBeLike(null, new int[0]));
+            Assert.Throws<ArgumentNullException>(() => ListExtensions.MutateToBeLike(null!, new int[0]));
         }
 
         [Test]
         public void Mutate_NullSource_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => ListExtensions.MutateToBeLike(new int[0], null));
+            Assert.Throws<ArgumentNullException>(() => ListExtensions.MutateToBeLike(new int[0], null!));
         }
 
         [Test]

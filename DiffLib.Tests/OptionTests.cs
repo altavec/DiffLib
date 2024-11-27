@@ -276,7 +276,7 @@ namespace DiffLib.Tests
         [Test]
         public void ToString_OfConstructedOptionHoldingNullReference_ReturnsEmptyString()
         {
-            var o = new Option<string>(null);
+            var o = new Option<string?>(null);
 
             var s = o.ToString();
 

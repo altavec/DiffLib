@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     /// <summary>
     /// This class adds extension methods for <see cref="IList{T}"/>.
     /// </summary>
-    [PublicAPI]
     public static class ListExtensions
     {
         /// <summary>
@@ -43,7 +36,7 @@ namespace DiffLib
         /// make adjustments to it to have the right elements. Useful in conjunction with UI bindings and
         /// similar that react to changes to the list.
         /// </remarks>
-        public static void MutateToBeLike<T>([NotNull] this IList<T> target, [NotNull] IList<T> source, [CanBeNull] IEqualityComparer<T> comparer = null, [CanBeNull] IDiffElementAligner<T> aligner = null)
+        public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, IEqualityComparer<T?>? comparer = default, IDiffElementAligner<T>? aligner = default)
         {
             MutateToBeLike(target, source, new DiffOptions(), comparer, aligner);
         }
@@ -82,7 +75,7 @@ namespace DiffLib
         /// make adjustments to it to have the right elements. Useful in conjunction with UI bindings and
         /// similar that react to changes to the list.
         /// </remarks>
-        public static void MutateToBeLike<T>([NotNull] this IList<T> target, [NotNull] IList<T> source, [CanBeNull] DiffOptions options, [CanBeNull] IEqualityComparer<T> comparer = null, [CanBeNull] IDiffElementAligner<T> aligner = null)
+        public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, DiffOptions? options, IEqualityComparer<T>? comparer = default, IDiffElementAligner<T>? aligner = default)
         {
             if (target == null)
                 throw new ArgumentNullException(nameof(target));
@@ -90,13 +83,11 @@ namespace DiffLib
                 throw new ArgumentNullException(nameof(source));
 
             options = options ?? new DiffOptions();
-            comparer = comparer ?? EqualityComparer<T>.Default;
+            comparer = comparer ?? EqualityComparer<T?>.Default;
             aligner = aligner ?? new BasicReplaceInsertDeleteDiffElementAligner<T>();
 
             var sections = Diff.CalculateSections(target, source, options, comparer);
             var items = Diff.AlignElements(target, source, sections, aligner).ToList();
-
-            Assume.That(items != null);
 
             int targetIndex = 0;
             foreach (var item in items)

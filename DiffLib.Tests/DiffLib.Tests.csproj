@@ -7,6 +7,10 @@
     <Description>Unit-tests for DiffLib</Description>
     <Product>DiffLib</Product>
 
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
     <AssemblyOriginatorKeyFile>..\DiffLib\Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -21,6 +25,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiffLib\DiffLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
   </ItemGroup>
 
 </Project>

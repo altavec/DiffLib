@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     /// <summary>
     /// This type functions similar to <see cref="Nullable{T}"/> except that it can hold any type of value
@@ -19,7 +15,7 @@ namespace DiffLib
         /// <param name="value">
         /// The value of this <see cref="Option{T}"/>.
         /// </param>
-        public Option([CanBeNull] T value)
+        public Option(T value)
         {
             _Value = value;
             HasValue = true;
@@ -28,7 +24,6 @@ namespace DiffLib
         /// <summary>
         /// Gets the value of this <see cref="Option{T}"/>.
         /// </summary>
-        [CanBeNull]
         public T Value
         {
             get
@@ -43,7 +38,7 @@ namespace DiffLib
         /// <summary>
         /// Gets the <see cref="Value"/>  of this <see cref="Option{T}"/>, or the default value for <typeparamref name="T"/> if it has no value.
         /// </summary>
-        public T GetValueOrDefault() => HasValue ? Value : default(T);
+        public T? GetValueOrDefault() => HasValue ? Value : default;
 
         /// <summary>
         /// Gets whether this <see cref="Option{T}"/> has a value.
@@ -82,10 +77,9 @@ namespace DiffLib
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(Option<T> other)
         {
-            var equalityComparer = EqualityComparer<T>.Default;
-            Assume.That(equalityComparer != null);
+            var equalityComparer = EqualityComparer<T?>.Default;
 
-            return equalityComparer.Equals(_Value, other._Value) && HasValue == other.HasValue;
+            return equalityComparer!.Equals(_Value, other._Value) && HasValue == other.HasValue;
         }
 
         /// <summary>
@@ -100,8 +94,7 @@ namespace DiffLib
             if (!HasValue)
                 return false;
 
-            var equalityComparer = EqualityComparer<T>.Default;
-            Assume.That(equalityComparer != null);
+            var equalityComparer = EqualityComparer<T?>.Default;
 
             return equalityComparer.Equals(_Value, other);
         }
@@ -113,7 +106,7 @@ namespace DiffLib
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
                 return false;
@@ -153,8 +146,7 @@ namespace DiffLib
         {
             unchecked
             {
-                var equalityComparer = EqualityComparer<T>.Default;
-                Assume.That(equalityComparer != null);
+                var equalityComparer = EqualityComparer<T?>.Default;
 
                 return (equalityComparer.GetHashCode(_Value) * 397) ^ HasValue.GetHashCode();
             }
@@ -167,7 +159,6 @@ namespace DiffLib
         /// A <see cref="T:System.String"/> containing a fully qualified type name.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        [NotNull]
         public override string ToString()
         {
             string result;
@@ -177,7 +168,6 @@ namespace DiffLib
             else
                 result = string.Empty;
 
-            Assume.That(result != null);
             return result;
         }
 

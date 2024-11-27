@@ -14,41 +14,41 @@ namespace DiffLib.Tests
         [Test]
         public void CalculateSections_NullCollection1_ThrowsArgumentNullException()
         {
-            List<string> collection1 = null;
+            List<string>? collection1 = null;
             var collection2 = new List<string>();
             EqualityComparer<string> comparer = EqualityComparer<string>.Default;
 
-            Assert.Throws<ArgumentNullException>(() => Diff.CalculateSections(collection1, collection2, comparer));
+            Assert.Throws<ArgumentNullException>(() => Diff.CalculateSections(collection1!, collection2, comparer));
         }
 
         [Test]
         public void CalculateSections_NullCollection2_ThrowsArgumentNullException()
         {
             var collection1 = new List<string>();
-            List<string> collection2 = null;
+            List<string>? collection2 = null;
             EqualityComparer<string> comparer = EqualityComparer<string>.Default;
 
-            Assert.Throws<ArgumentNullException>(() => Diff.CalculateSections(collection1, collection2, comparer));
+            Assert.Throws<ArgumentNullException>(() => Diff.CalculateSections(collection1, collection2!, comparer));
         }
 
         [Test]
         public void AlignElements_NullCollection1_ThrowsArgumentNullException()
         {
-            IList<int> collection1 = null;
+            IList<int>? collection1 = null;
             IList<int> collection2 = new int[0];
             IEnumerable<DiffSection> diffSections = new DiffSection[0];
             IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
-            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner));
+            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1!, collection2, diffSections, aligner));
         }
 
         [Test]
         public void AlignElements_NullCollection2_ThrowsArgumentNullException()
         {
             IList<int> collection1 = new int[0];
-            IList<int> collection2 = null;
+            IList<int>? collection2 = null;
             IEnumerable<DiffSection> diffSections = new DiffSection[0];
             IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
-            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner));
+            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2!, diffSections, aligner));
         }
 
         [Test]
@@ -56,9 +56,9 @@ namespace DiffLib.Tests
         {
             IList<int> collection1 = new int[0];
             IList<int> collection2 = new int[0];
-            IEnumerable<DiffSection> diffSections = null;
+            IEnumerable<DiffSection>? diffSections = null;
             IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
-            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner));
+            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections!, aligner));
         }
 
         [Test]
@@ -67,8 +67,8 @@ namespace DiffLib.Tests
             IList<int> collection1 = new int[0];
             IList<int> collection2 = new int[0];
             IEnumerable<DiffSection> diffSections = new DiffSection[0];
-            IDiffElementAligner<int> aligner = null;
-            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner));
+            IDiffElementAligner<int>? aligner = null;
+            Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner!));
         }
 
         [Test]
@@ -136,12 +136,12 @@ namespace DiffLib.Tests
 
             CollectionAssert.AreEqual(new[]
             {
-                new DiffElement<string>(0, "Line 1", 0, "Line 1", DiffOperation.Match),
-                new DiffElement<string>(null, Option<string>.None, 1, null, DiffOperation.Insert),
-                new DiffElement<string>(1, "Line 2", 2, "Line 2", DiffOperation.Match),
-                new DiffElement<string>(2, null, null, Option<string>.None, DiffOperation.Delete),
-                new DiffElement<string>(3, "Line 3", null, Option<string>.None, DiffOperation.Delete),
-                new DiffElement<string>(4, "Line 4", 3, "Line 4", DiffOperation.Match),
+                new DiffElement<string?>(0, "Line 1", 0, "Line 1", DiffOperation.Match),
+                new DiffElement<string?>(null, Option<string?>.None, 1, null, DiffOperation.Insert),
+                new DiffElement<string?>(1, "Line 2", 2, "Line 2", DiffOperation.Match),
+                new DiffElement<string?>(2, null, null, Option<string?>.None, DiffOperation.Delete),
+                new DiffElement<string?>(3, "Line 3", null, Option<string?>.None, DiffOperation.Delete),
+                new DiffElement<string?>(4, "Line 4", 3, "Line 4", DiffOperation.Match),
             }, elements);
         }
     }

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using JetBrains.Annotations;
-
 namespace DiffLib
 {
     /// <summary>
@@ -24,7 +18,7 @@ namespace DiffLib
         /// The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If
         /// <c>null</c> then <see cref="EqualityComparer{T}.Default"/> is used.
         /// </param>
-        public TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver([CanBeNull] IEqualityComparer<T> equalityComparer = null)
+        public TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver(IEqualityComparer<T>? equalityComparer = default)
         {
             _EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
         }

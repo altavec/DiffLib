@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     internal static class GetHashCodeExtension
     {
-        internal static int GetHashCode<T>([CanBeNull] this T instance, [NotNull] IEqualityComparer<T> equalityComparer)
+        internal static int GetHashCode<T>(this T? instance, IEqualityComparer<T> equalityComparer)
         {
             if (instance == null)
                 return 0;

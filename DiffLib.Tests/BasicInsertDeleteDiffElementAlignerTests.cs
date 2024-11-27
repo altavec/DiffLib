@@ -17,10 +17,10 @@ namespace DiffLib.Tests
         {
             var aligner = new BasicInsertDeleteDiffElementAligner<int>();
 
-            IList<int> collection1 = null;
+            IList<int>? collection1 = null;
             IList<int> collection2 = new List<int>();
 
-            Assert.Throws<ArgumentNullException>(() => aligner.Align(collection1, 0, 1, collection2, 0, 1).ToArray());
+            Assert.Throws<ArgumentNullException>(() => aligner.Align(collection1!, 0, 1, collection2, 0, 1).ToArray());
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace DiffLib.Tests
             var aligner = new BasicInsertDeleteDiffElementAligner<int>();
 
             IList<int> collection1 = new List<int>(); 
-            IList<int> collection2 = null;
+            IList<int>? collection2 = null;
 
-            Assert.Throws<ArgumentNullException>(() => aligner.Align(collection1, 0, 1, collection2, 0, 1).ToArray());
+            Assert.Throws<ArgumentNullException>(() => aligner.Align(collection1, 0, 1, collection2!, 0, 1).ToArray());
         }
 
         [Test]

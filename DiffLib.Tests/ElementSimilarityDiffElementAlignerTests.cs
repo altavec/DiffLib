@@ -12,7 +12,7 @@ namespace DiffLib.Tests
         [Test]
         public void Constructor_NullSimilarityFunc_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new ElementSimilarityDiffElementAligner<int>(null));
+            Assert.Throws<ArgumentNullException>(() => new ElementSimilarityDiffElementAligner<int>(null!));
         }
     }
 }

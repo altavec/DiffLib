@@ -1,27 +1,20 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     internal class LongestCommonSubsequence<T>
     {
-        [NotNull]
         private readonly IList<T> _Collection1;
 
-        [NotNull]
         private readonly IList<T> _Collection2;
 
-        [NotNull]
         private readonly IEqualityComparer<T> _Comparer;
 
-        [NotNull]
         private readonly Dictionary<int, HashcodeOccurance> _HashCodes2 = new Dictionary<int, HashcodeOccurance>();
 
         private bool _FirstHashCodes2 = true;
         private int _HashCodes2Lower;
         private int _HashCodes2Upper;
 
-        public LongestCommonSubsequence([NotNull] IList<T> collection1, [NotNull] IList<T> collection2, [NotNull] IEqualityComparer<T> comparer)
+        public LongestCommonSubsequence(IList<T> collection1, IList<T> collection2, IEqualityComparer<T> comparer)
         {
             _Collection1 = collection1;
             _Collection2 = collection2;
@@ -45,11 +38,10 @@ namespace DiffLib
 
                 var hashcode = _Collection1[index1]?.GetHashCode(_Comparer) ?? 0;
 
-                HashcodeOccurance occurance;
+                HashcodeOccurance? occurance;
                 if (!_HashCodes2.TryGetValue(hashcode, out occurance))
                     continue;
 
-                Assume.That(occurance != null);
                 while (occurance != null)
                 {
                     int index2 = occurance.Position;
@@ -128,7 +120,6 @@ namespace DiffLib
             HashcodeOccurance occurance;
             if (_HashCodes2.TryGetValue(hashcode, out occurance))
             {
-                Assume.That(occurance != null);
                 occurance.Next = new HashcodeOccurance(position, occurance.Next);
             }
             else

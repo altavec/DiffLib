@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     /// <summary>
     /// Static API class for DiffLib.
     /// </summary>
-    [PublicAPI]
     public static class Diff
     {
         /// <summary>
@@ -34,8 +29,7 @@ namespace DiffLib
         /// <para>- or -</para>
         /// <para><paramref name="collection2"/> is <c>null</c>.</para>
         /// </exception>
-        [NotNull]
-        public static IEnumerable<DiffSection> CalculateSections<T>([NotNull] IList<T> collection1, [NotNull] IList<T> collection2, [CanBeNull] IEqualityComparer<T> comparer = null)
+        public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, IEqualityComparer<T>? comparer = default)
         {
             return CalculateSections(collection1, collection2, new DiffOptions(), comparer);
         }
@@ -67,8 +61,7 @@ namespace DiffLib
         /// <para>- or -</para>
         /// <para><paramref name="collection2"/> is <c>null</c>.</para>
         /// </exception>
-        [NotNull]
-        public static IEnumerable<DiffSection> CalculateSections<T>([NotNull] IList<T> collection1, [NotNull] IList<T> collection2, [CanBeNull] DiffOptions options, [CanBeNull] IEqualityComparer<T> comparer = null)
+        public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, DiffOptions? options, IEqualityComparer<T>? comparer = default)
         {
             if (collection1 == null)
                 throw new ArgumentNullException(nameof(collection1));
@@ -76,7 +69,6 @@ namespace DiffLib
                 throw new ArgumentNullException(nameof(collection2));
 
             comparer = comparer ?? EqualityComparer<T>.Default;
-            Assume.That(comparer != null);
 
             options = options ?? new DiffOptions();
 
@@ -114,8 +106,7 @@ namespace DiffLib
         /// <para>- or -</para>
         /// <para><paramref name="aligner"/> is <c>null</c>.</para>
         /// </exception>
-        [NotNull]
-        public static IEnumerable<DiffElement<T>> AlignElements<T>([NotNull] IList<T> collection1, [NotNull] IList<T> collection2, [NotNull] IEnumerable<DiffSection> diffSections, [NotNull] IDiffElementAligner<T> aligner)
+        public static IEnumerable<DiffElement<T>> AlignElements<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
         {
             if (collection1 == null)
                 throw new ArgumentNullException(nameof(collection1));
@@ -129,8 +120,7 @@ namespace DiffLib
             return AlignElementsImplementation(collection1, collection2, diffSections, aligner);
         }
 
-        [NotNull]
-        private static IEnumerable<DiffElement<T>> AlignElementsImplementation<T>([NotNull] IList<T> collection1, [NotNull] IList<T> collection2, [NotNull] IEnumerable<DiffSection> diffSections, [NotNull] IDiffElementAligner<T> aligner)
+        private static IEnumerable<DiffElement<T>> AlignElementsImplementation<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
         {
             int start1 = 0;
             int start2 = 0;

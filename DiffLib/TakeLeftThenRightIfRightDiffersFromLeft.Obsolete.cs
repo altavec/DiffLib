@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using JetBrains.Annotations;
-
 namespace DiffLib
 {
     /// <summary>
@@ -17,7 +12,6 @@ namespace DiffLib
     /// instead.
     /// </remarks>
     [Obsolete("Use TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver<T> instead")]
-    [PublicAPI]
     public class TakeLeftThenRightIfRightDiffersFromLeft<T> : TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver<T>
     {
         /// <summary>
@@ -27,7 +21,7 @@ namespace DiffLib
         /// The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If
         /// <c>null</c> then <see cref="EqualityComparer{T}.Default"/> is used.
         /// </param>
-        public TakeLeftThenRightIfRightDiffersFromLeft([CanBeNull] IEqualityComparer<T> equalityComparer = null)
+        public TakeLeftThenRightIfRightDiffersFromLeft(IEqualityComparer<T?>? equalityComparer = default)
             : base(equalityComparer)
         {
         }

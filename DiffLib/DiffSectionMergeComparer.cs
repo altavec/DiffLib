@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
     {
-        [NotNull]
-        private readonly IEqualityComparer<T> _Comparer;
+        private readonly IEqualityComparer<T?> _Comparer;
 
-        public DiffSectionMergeComparer([NotNull] IEqualityComparer<T> comparer)
+        public DiffSectionMergeComparer(IEqualityComparer<T?> comparer)
         {
             _Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
         }
@@ -25,7 +19,7 @@ namespace DiffLib
             return _Comparer.GetHashCode(GetElement(obj));
         }
 
-        private T GetElement(DiffElement<T> diffElement)
+        private T? GetElement(DiffElement<T> diffElement)
         {
             if (diffElement.ElementFromCollection1.HasValue)
                 return diffElement.ElementFromCollection1.Value;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     /// <summary>
     /// This class implements a <see cref="IDiffElementAligner{T}"/> strategy that will try
@@ -21,12 +17,10 @@ namespace DiffLib
         // with this number to see what is feasible.
         private const int _MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd = 15;
 
-        [NotNull]
         private readonly ElementSimilarity<T> _SimilarityFunc;
 
         private readonly double _ModificationThreshold;
 
-        [NotNull]
         private readonly IDiffElementAligner<T> _BasicAligner = new BasicInsertDeleteDiffElementAligner<T>();
 
         /// <summary>
@@ -43,7 +37,7 @@ namespace DiffLib
         /// <exception cref="ArgumentNullException">
         /// <para><paramref name="similarityFunc"/> is <c>null</c>.</para>
         /// </exception>
-        public ElementSimilarityDiffElementAligner([NotNull] ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333)
+        public ElementSimilarityDiffElementAligner(ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333)
         {
             _SimilarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
             _ModificationThreshold = modificationThreshold;
@@ -95,8 +89,7 @@ namespace DiffLib
             return _BasicAligner.Align(collection1, start1, length1, collection2, start2, length2);
         }
 
-        [NotNull]
-        private List<DiffElement<T>> TryAlignSections([NotNull] IList<T> collection1, int start1, int length1, [NotNull] IList<T> collection2, int start2, int length2)
+        private List<DiffElement<T>> TryAlignSections(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
         {
             // "Optimization", too big input-sets will have to be dropped for now, will revisit this
             // number in the future to see if I can bring it up, or possible that I don't need it,
@@ -141,14 +134,12 @@ namespace DiffLib
             return result;
         }
 
-        [NotNull]
-        private AlignmentNode CalculateBestAlignment([NotNull] Dictionary<AlignmentKey, AlignmentNode> nodes, [NotNull] IList<T> collection1, int lower1, int upper1, [NotNull] IList<T> collection2, int lower2, int upper2)
+        private AlignmentNode CalculateBestAlignment(Dictionary<AlignmentKey, AlignmentNode> nodes, IList<T> collection1, int lower1, int upper1, IList<T> collection2, int lower2, int upper2)
         {
             var key = new AlignmentKey(lower1, lower2);
             AlignmentNode result;
             if (nodes.TryGetValue(key, out result))
             {
-                Assume.That(result != null);
                 return result;
             }
 
@@ -177,7 +168,7 @@ namespace DiffLib
                 // Calculate how the results will be if we replace or modify an element
                 var restAfterChange = CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2 + 1, upper2);
                 double similarity = _SimilarityFunc(collection1[lower1], collection2[lower2]);
-                AlignmentNode resultChange = null;
+                AlignmentNode? resultChange = null;
                 if (similarity >= _ModificationThreshold)
                     resultChange = new AlignmentNode(DiffOperation.Modify, similarity + restAfterInsert.Similarity, restAfterChange.NodeCount + 1, restAfterChange);
 

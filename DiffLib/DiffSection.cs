@@ -1,6 +1,3 @@
-using System;
-using JetBrains.Annotations;
-
 namespace DiffLib
 {
     /// <summary>
@@ -76,7 +73,7 @@ namespace DiffLib
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
                 return false;
@@ -130,7 +127,6 @@ namespace DiffLib
         /// A <see cref="T:System.String"/> containing a fully qualified type name.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        [NotNull]
         public override string ToString()
         {
             if (IsMatch)
