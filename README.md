@@ -11,11 +11,18 @@ do.
 
 Details:
 
-* Language: C# 7.0
-* Runtime: .NET Standard 1.0
+* Language: C# 13.0
+* Runtime:
+  * .NET Framework 4.5
+  * .NET Framework 4.6.1
+  * .NET Standard 1.0
+  * .NET Standard 2.0
+  * .NET Standard 2.1
+  * .NET 5.0
+  * .NET 6.0
 
 Repository and project location: [GitHub][1]  
-Maintainer: [Lasse V. Karlsen][2]
+Maintainer: [Lasse V. Karlsen][2], [Ross King][3]
 
 ---
 
@@ -27,5 +34,6 @@ using one of these commands:
     git cat-file blob pubkey | gpg --import
     git cat-file blob pubkey | gpg2 --import
 
-  [1]: https://github.com/lassevk/DiffLib
+  [1]: https://github.com/altavec/DiffLib
   [2]: mailto:lasse@vkarlsen.no
+  [3]: mailto:ross.king@altavec.com
