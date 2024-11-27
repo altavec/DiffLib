@@ -24,6 +24,8 @@
     <Product>DiffLib</Product>
     <Authors>lassevk rsking</Authors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
 
     <EmbedUntrackedSources>True</EmbedUntrackedSources>
     <Deterministic>True</Deterministic>
@@ -34,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
+    <None Include="..\icon.png;..\LICENSE.md;..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <Choose>
