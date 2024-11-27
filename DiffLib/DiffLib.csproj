@@ -6,7 +6,7 @@
     <Copyright>Copyright (C) Lasse V. Karlsen 2015-2017, Altavec 2024, All rights reserved</Copyright>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 
     <LangVersion>latest</LangVersion>
@@ -21,13 +21,12 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Packaging">
-    <PackageProjectUrl>https://github.com/altavec/DiffLib</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/altavec/DiffLib.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Product>DiffLib</Product>
     <Authors>lassevk rsking</Authors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+
+    <EmbedUntrackedSources>True</EmbedUntrackedSources>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
@@ -76,6 +75,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DotNet.ReproducibleBuilds.Isolated" Version="1.2.25">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
