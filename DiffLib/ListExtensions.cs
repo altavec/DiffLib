@@ -52,6 +52,10 @@ public static class ListExtensions
     /// </remarks>
     public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, DiffOptions? options, IEqualityComparer<T>? comparer = default, IDiffElementAligner<T>? aligner = default)
     {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(source);
+#else
         if (target is null)
         {
             throw new ArgumentNullException(nameof(target));
@@ -61,6 +65,7 @@ public static class ListExtensions
         {
             throw new ArgumentNullException(nameof(source));
         }
+#endif
 
         options ??= new DiffOptions();
         comparer ??= EqualityComparer<T?>.Default;

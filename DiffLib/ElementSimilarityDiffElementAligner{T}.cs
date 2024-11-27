@@ -36,6 +36,10 @@ public class ElementSimilarityDiffElementAligner<T>(ElementSimilarity<T> similar
     /// </exception>
     public IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
     {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(collection1);
+        ArgumentNullException.ThrowIfNull(collection2);
+#else
         if (collection1 is null)
         {
             throw new ArgumentNullException(nameof(collection1));
@@ -45,6 +49,7 @@ public class ElementSimilarityDiffElementAligner<T>(ElementSimilarity<T> similar
         {
             throw new ArgumentNullException(nameof(collection2));
         }
+#endif
 
         if (length1 > 0 && length2 > 0)
         {

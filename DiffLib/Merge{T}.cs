@@ -15,6 +15,15 @@ internal class Merge<T> : IEnumerable<T?>
 
     public Merge(IList<T> commonBase, IList<T> left, IList<T> right, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?> comparer, DiffOptions diffOptions)
     {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(commonBase);
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+        ArgumentNullException.ThrowIfNull(aligner);
+        ArgumentNullException.ThrowIfNull(comparer);
+        ArgumentNullException.ThrowIfNull(diffOptions);
+        ArgumentNullException.ThrowIfNull(conflictResolver);
+#else
         if (commonBase is null)
         {
             throw new ArgumentNullException(nameof(commonBase));
@@ -45,7 +54,13 @@ internal class Merge<T> : IEnumerable<T?>
             throw new ArgumentNullException(nameof(diffOptions));
         }
 
-        this.conflictResolver = conflictResolver ?? throw new ArgumentNullException(nameof(conflictResolver));
+        if (conflictResolver is null)
+        {
+            throw new ArgumentNullException(nameof(conflictResolver));
+        }
+#endif
+
+        this.conflictResolver = conflictResolver;
 
         var commonBaseToLeft = Diff.AlignElements(commonBase, left, Diff.CalculateSections(commonBase, left, diffOptions, comparer), aligner).ToList();
         this.diffCommonBaseToLeft = commonBaseToLeft;

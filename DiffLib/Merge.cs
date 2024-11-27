@@ -38,6 +38,13 @@ public static class Merge
     /// <exception cref="MergeConflictException">The <paramref name="conflictResolver"/> threw a <see cref="MergeConflictException"/> to indicate a failure to resolve a conflict.</exception>
     public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, DiffOptions? diffOptions, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default)
     {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(commonBase);
+        ArgumentNullException.ThrowIfNull(left);
+        ArgumentNullException.ThrowIfNull(right);
+        ArgumentNullException.ThrowIfNull(aligner);
+        ArgumentNullException.ThrowIfNull(conflictResolver);
+#else
         if (commonBase is null)
         {
             throw new ArgumentNullException(nameof(commonBase));
@@ -62,6 +69,7 @@ public static class Merge
         {
             throw new ArgumentNullException(nameof(conflictResolver));
         }
+#endif
 
         diffOptions ??= new DiffOptions();
         comparer ??= EqualityComparer<T?>.Default;
