@@ -82,6 +82,15 @@ public readonly struct DiffElement<T>(int? elementIndexFromCollection1, Option<T
     /// <inheritdoc />
     public override readonly int GetHashCode()
     {
+#if NETSTANDARD2_1_OR_GREATER
+        var hashCode = default(HashCode);
+        hashCode.Add(this.ElementFromCollection1);
+        hashCode.Add(this.ElementFromCollection2);
+        hashCode.Add(this.ElementIndexFromCollection1);
+        hashCode.Add(this.ElementIndexFromCollection2);
+        hashCode.Add(this.Operation);
+        return hashCode.ToHashCode();
+#else
         unchecked
         {
             var hashCode = this.ElementFromCollection1.GetHashCode();
@@ -91,6 +100,7 @@ public readonly struct DiffElement<T>(int? elementIndexFromCollection1, Option<T
             hashCode = (hashCode * 397) ^ (int)this.Operation;
             return hashCode;
         }
+#endif
     }
 
     /// <inheritdoc />

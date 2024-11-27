@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard1.0;net461;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;netstandard1.0;net461;net45</TargetFrameworks>
     <Description>A Diff implementation for .NET Standard 1.0 and up, written in C#.</Description>
     <Copyright>Copyright (C) Lasse V. Karlsen 2015-2017, Altavec 2024, All rights reserved</Copyright>
     <SignAssembly>True</SignAssembly>
@@ -39,16 +39,18 @@
   </ItemGroup>
 
   <Choose>
+    <When Condition=" $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.1')) ">
+    </When>
     <When Condition=" $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.0')) ">
       <ItemGroup>
         <PackageReference Include="System.ValueTuple" Version="4.4.0" />
       </ItemGroup>
     </When>
-    <Otherwise>
+    <When Condition=" $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard1.0')) ">
       <ItemGroup>
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
       </ItemGroup>
-    </Otherwise>
+    </When>
   </Choose>
 
   <ItemGroup>
