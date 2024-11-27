@@ -1,12 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-
-// ReSharper disable UnusedVariable
-// ReSharper disable PossibleNullReferenceException
-// ReSharper disable EqualExpressionComparison
-// ReSharper disable SuspiciousTypeConversion.Global
-
-namespace DiffLib.Tests
+﻿namespace DiffLib.Tests
 {
     [TestFixture]
     public class OptionTests

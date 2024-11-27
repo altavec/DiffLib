@@ -1,13 +1,4 @@
-﻿using System;
-using System.Linq;
-
-using NUnit.Framework;
-
-// ReSharper disable PossibleNullReferenceException
-// ReSharper disable InvokeAsExtensionMethod
-// ReSharper disable AssignNullToNotNullAttribute
-
-namespace DiffLib.Tests
+﻿namespace DiffLib.Tests
 {
     [TestFixture]
     public class ListExtensionsTests

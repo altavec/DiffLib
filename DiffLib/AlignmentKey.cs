@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     internal struct AlignmentKey : IEquatable<AlignmentKey>
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-
-// ReSharper disable ObjectCreationAsStatement
-// ReSharper disable AssignNullToNotNullAttribute
-
-namespace DiffLib.Tests
+﻿namespace DiffLib.Tests
 {
     [TestFixture]
     public class ElementSimilarityDiffElementAlignerTests

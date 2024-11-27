@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using NUnit.Framework;
-
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-
-namespace DiffLib.Tests.Issues
+﻿namespace DiffLib.Tests.Issues
 {
     [TestFixture]
     public class Issue9

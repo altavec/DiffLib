@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DiffLib
+﻿namespace DiffLib
 {
     /// <summary>
     /// This implementation of <see cref="IMergeConflictResolver{T}"/> takes the left side then takes the right side.

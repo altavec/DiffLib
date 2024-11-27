@@ -1,8 +1,4 @@
-﻿using NUnit.Framework;
-
-// ReSharper disable PossibleNullReferenceException
-
-namespace DiffLib.Tests
+﻿namespace DiffLib.Tests
 {
     [TestFixture]
     public class AlignmentKeyTests

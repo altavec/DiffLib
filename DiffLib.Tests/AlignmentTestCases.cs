@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-
-// ReSharper disable AssignNullToNotNullAttribute
-// ReSharper disable PossibleNullReferenceException
-
-namespace DiffLib.Tests
+﻿namespace DiffLib.Tests
 {
     [TestFixture]
     public class AlignmentTestCases
