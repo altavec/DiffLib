@@ -7,44 +7,27 @@ namespace DiffLib;
 /// <summary>
 /// This struct holds a section of matched or unmatch element portions from the two collectoins.
 /// </summary>
+/// <param name="isMatch"><see langword="true"/> if a match was found between the two collections; otherwise, <see langword="false"/>.</param>
+/// <param name="lengthInCollection1">How many elements from the first collection this section contains.</param>
+/// <param name="lengthInCollection2">How many elements from the second collection this section contains.</param>
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-public readonly struct DiffSection : IEquatable<DiffSection>
+public readonly struct DiffSection(bool isMatch, int lengthInCollection1, int lengthInCollection2) : IEquatable<DiffSection>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="DiffSection"/> struct.
+    /// Gets a value indicating whether there the section specifies a match between the two collections or portions that could not be matched.
     /// </summary>
-    /// <param name="isMatch"><see langword="true"/> if a match was found between the two collections; otherwise, <see langword="false"/>.</param>
-    /// <param name="lengthInCollection1">How many elements from the first collection this section contains.</param>
-    /// <param name="lengthInCollection2">How many elements from the second collection this section contains.</param>
-    public DiffSection(bool isMatch, int lengthInCollection1, int lengthInCollection2)
-    {
-        this.IsMatch = isMatch;
-        this.LengthInCollection1 = lengthInCollection1;
-        this.LengthInCollection2 = lengthInCollection2;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether there the section specifies a match between the two collections or
-    /// portions that could not be matched.
-    /// </summary>
-    /// <value>
-    /// <see langword="true"/> if a match was found between the two collections;
-    /// otherwise, <see langword="false"/>.
-    /// </value>
-    public bool IsMatch
-    {
-        get;
-    }
+    /// <value><see langword="true"/> if a match was found between the two collections; otherwise, <see langword="false"/>.</value>
+    public bool IsMatch { get; } = isMatch;
 
     /// <summary>
     /// Gets the number of elements from the first collection this section contains.
     /// </summary>
-    public int LengthInCollection1 { get; }
+    public int LengthInCollection1 { get; } = lengthInCollection1;
 
     /// <summary>
     /// Gets the number of elements from the second collection this section contains.
     /// </summary>
-    public int LengthInCollection2 { get; }
+    public int LengthInCollection2 { get; } = lengthInCollection2;
 
     /// <summary>
     /// Implements the equality operator.

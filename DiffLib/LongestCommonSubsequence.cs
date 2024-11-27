@@ -4,27 +4,15 @@
 
 namespace DiffLib;
 
-internal class LongestCommonSubsequence<T>
+internal class LongestCommonSubsequence<T>(IList<T> collection1, IList<T> collection2, IEqualityComparer<T> comparer)
 {
-    private readonly IList<T> collection1;
-
-    private readonly IList<T> collection2;
-
-    private readonly IEqualityComparer<T> comparer;
-
     private readonly Dictionary<int, HashcodeOccurance> hashCodes2 = [];
 
     private bool firstHashCodes2 = true;
+
     private int hashCodes2Lower;
+
     private int hashCodes2Upper;
-
-    public LongestCommonSubsequence(IList<T> collection1, IList<T> collection2, IEqualityComparer<T> comparer)
-    {
-        this.collection1 = collection1;
-        this.collection2 = collection2;
-
-        this.comparer = comparer;
-    }
 
     public bool Find(int lower1, int upper1, int lower2, int upper2, out int position1, out int position2, out int length)
     {
@@ -42,7 +30,7 @@ internal class LongestCommonSubsequence<T>
                 break;
             }
 
-            var hashcode = this.collection1[index1]?.GetHashCode(this.comparer) ?? 0;
+            var hashcode = collection1[index1]?.GetHashCode(comparer) ?? 0;
 
             if (!this.hashCodes2.TryGetValue(hashcode, out var occurance))
             {
@@ -60,7 +48,7 @@ internal class LongestCommonSubsequence<T>
                 }
 
                 // Don't bother with this if it doesn't match at the Nth element
-                if (!this.comparer.Equals(this.collection1[index1 + length], this.collection2[index2 + length]))
+                if (!comparer.Equals(collection1[index1 + length], collection2[index2 + length]))
                 {
                     continue;
                 }
@@ -87,7 +75,7 @@ internal class LongestCommonSubsequence<T>
     {
         var count = 0;
 
-        while (index1 < upper1 && index2 < upper2 && this.comparer.Equals(this.collection1[index1], this.collection2[index2]))
+        while (index1 < upper1 && index2 < upper2 && comparer.Equals(collection1[index1], collection2[index2]))
         {
             count++;
             index1++;
@@ -107,7 +95,7 @@ internal class LongestCommonSubsequence<T>
 
             for (var index = lower; index < upper; index++)
             {
-                this.AddHashCode2(index, this.collection2[index]?.GetHashCode(this.comparer) ?? 0);
+                this.AddHashCode2(index, collection2[index]?.GetHashCode(comparer) ?? 0);
             }
 
             return;
@@ -116,12 +104,12 @@ internal class LongestCommonSubsequence<T>
         while (this.hashCodes2Lower > lower)
         {
             this.hashCodes2Lower--;
-            this.AddHashCode2(this.hashCodes2Lower, this.collection2[this.hashCodes2Lower]?.GetHashCode(this.comparer) ?? 0);
+            this.AddHashCode2(this.hashCodes2Lower, collection2[this.hashCodes2Lower]?.GetHashCode(comparer) ?? 0);
         }
 
         while (this.hashCodes2Upper < upper)
         {
-            this.AddHashCode2(this.hashCodes2Upper, this.collection2[this.hashCodes2Upper]?.GetHashCode(this.comparer) ?? 0);
+            this.AddHashCode2(this.hashCodes2Upper, collection2[this.hashCodes2Upper]?.GetHashCode(comparer) ?? 0);
             this.hashCodes2Upper++;
         }
     }
@@ -134,7 +122,7 @@ internal class LongestCommonSubsequence<T>
         }
         else
         {
-            this.hashCodes2[hashcode] = new HashcodeOccurance(position, null);
+            this.hashCodes2[hashcode] = new HashcodeOccurance(position, next: null);
         }
     }
 }

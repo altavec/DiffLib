@@ -13,18 +13,13 @@ namespace DiffLib;
 /// String similarity will apply a diff between the two strings and count how much of
 /// the two strings were considered matching, in relation to the two strings in total.
 /// </remarks>
-public class StringSimilarityDiffElementAligner : IDiffElementAligner<string?>
+/// <param name="modificationThreshold">
+/// <para>A threshold value used to determine if aligned elements are considered replacements or modifications.</para>
+/// <para>If two items are more similar than the threshold specifies (similarity > threshold), then it results in a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.</para>
+/// </param>
+public class StringSimilarityDiffElementAligner(double modificationThreshold = 0.3333) : IDiffElementAligner<string?>
 {
-    private readonly IDiffElementAligner<string?> aligner;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StringSimilarityDiffElementAligner"/> class.
-    /// </summary>
-    /// <param name="modificationThreshold">
-    /// <para>A threshold value used to determine if aligned elements are considered replacements or modifications.</para>
-    /// <para>If two items are more similar than the threshold specifies (similarity > threshold), then it results in a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.</para>
-    /// </param>
-    public StringSimilarityDiffElementAligner(double modificationThreshold = 0.3333) => this.aligner = new ElementSimilarityDiffElementAligner<string?>(StringSimilarity, modificationThreshold);
+    private readonly ElementSimilarityDiffElementAligner<string?> aligner = new(StringSimilarity, modificationThreshold);
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">

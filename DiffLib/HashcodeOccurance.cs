@@ -4,15 +4,9 @@
 
 namespace DiffLib;
 
-internal class HashcodeOccurance
+internal class HashcodeOccurance(int position, HashcodeOccurance? next)
 {
-    public HashcodeOccurance(int position, HashcodeOccurance? next)
-    {
-        this.Position = position;
-        this.Next = next;
-    }
+    public int Position { get; } = position;
 
-    public int Position { get; }
-
-    public HashcodeOccurance? Next { get; set; }
+    public HashcodeOccurance? Next { get; set; } = next;
 }

@@ -38,24 +38,12 @@ public static class Diff
     /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
-    public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, DiffOptions? options, IEqualityComparer<T>? comparer = default)
+    public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, DiffOptions? options, IEqualityComparer<T>? comparer = default) => (collection1, collection2) switch
     {
-        if (collection1 is null)
-        {
-            throw new ArgumentNullException(nameof(collection1));
-        }
-
-        if (collection2 is null)
-        {
-            throw new ArgumentNullException(nameof(collection2));
-        }
-
-        comparer ??= EqualityComparer<T>.Default;
-
-        options ??= new DiffOptions();
-
-        return LongestCommonSubsectionDiff.Calculate(collection1, collection2, options, comparer);
-    }
+        (null, _) => throw new ArgumentNullException(nameof(collection1)),
+        (_, null) => throw new ArgumentNullException(nameof(collection2)),
+        _ => LongestCommonSubsectionDiff.Calculate(collection1, collection2, options ?? new DiffOptions(), comparer ?? EqualityComparer<T>.Default),
+    };
 
     /// <summary>
     /// Align the sections found by <see cref="CalculateSections{T}(IList{T},IList{T},DiffOptions,IEqualityComparer{T})"/> by trying to find out, within each section, which elements from one collection line up the best with elements from the other collection.

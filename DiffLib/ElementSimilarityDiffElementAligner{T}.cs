@@ -9,7 +9,11 @@ namespace DiffLib;
 /// depending on individual element similarity.
 /// </summary>
 /// <typeparam name="T">The type of elements in the two collections to align.</typeparam>
-public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
+/// <param name="similarityFunc">A <see cref="ElementSimilarity{T}"/> delegate that is used to work out how similar two elements are.</param>
+/// <param name="modificationThreshold">A threshold value used to determine if aligned elements are considered replacements or modifications.
+/// If two items are more similar than the threshold specifies (similarity > threshold), then it results in a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.</param>
+/// <exception cref="ArgumentNullException"><paramref name="similarityFunc"/> is <see langword="null"/>.</exception>
+public class ElementSimilarityDiffElementAligner<T>(ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333) : IDiffElementAligner<T>
 {
     // If the combined lengths of the two change-sections is more than this number of
     // elements, punt to a delete + add for the entire change. The alignment code
@@ -18,24 +22,11 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     // with this number to see what is feasible.
     private const int MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd = 15;
 
-    private readonly ElementSimilarity<T> similarityFunc;
+    private readonly ElementSimilarity<T> similarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
 
-    private readonly double modificationThreshold;
+    private readonly double modificationThreshold = modificationThreshold;
 
-    private readonly IDiffElementAligner<T> basicAligner = new BasicInsertDeleteDiffElementAligner<T>();
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ElementSimilarityDiffElementAligner{T}"/> class.
-    /// </summary>
-    /// <param name="similarityFunc">A <see cref="ElementSimilarity{T}"/> delegate that is used to work out how similar two elements are.</param>
-    /// <param name="modificationThreshold">A threshold value used to determine if aligned elements are considered replacements or modifications.
-    /// If two items are more similar than the threshold specifies (similarity > threshold), then it results in a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="similarityFunc"/> is <see langword="null"/>.</exception>
-    public ElementSimilarityDiffElementAligner(ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333)
-    {
-        this.similarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
-        this.modificationThreshold = modificationThreshold;
-    }
+    private readonly BasicInsertDeleteDiffElementAligner<T> basicAligner = new();
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
@@ -96,12 +87,12 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
                         break;
 
                     case DiffOperation.Insert:
-                        result.Add(new DiffElement<T>(null, Option<T>.None, start2, collection2[start2], bestNode.Operation));
+                        result.Add(new DiffElement<T>(elementIndexFromCollection1: null, Option.None<T>(), start2, collection2[start2], bestNode.Operation));
                         start2++;
                         break;
 
                     case DiffOperation.Delete:
-                        result.Add(new DiffElement<T>(start1, collection1[start1], null, Option<T>.None, bestNode.Operation));
+                        result.Add(new DiffElement<T>(start1, collection1[start1], elementIndexFromCollection2: null, Option.None<T>(), bestNode.Operation));
                         start1++;
                         break;
 
@@ -126,7 +117,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
 
         if (lower1 == upper1 && lower2 == upper2)
         {
-            result = new AlignmentNode(DiffOperation.Match, 0.0, 0, null);
+            result = new AlignmentNode(DiffOperation.Match, 0.0, 0, next: null);
         }
         else if (lower1 == upper1)
         {

@@ -7,14 +7,14 @@ public class StringSimilarityDiffElementAlignerTests
     public void Align_NullCollection1_ThrowsArgumentNullException()
     {
         var aligner = new StringSimilarityDiffElementAligner();
-        Assert.Throws<ArgumentNullException>(() => aligner.Align(null!, 0, 1, new List<string?>(), 0, 1));
+        Assert.Throws<ArgumentNullException>(() => aligner.Align(null!, 0, 1, [], 0, 1));
     }
 
     [Test]
     public void Align_NullCollection2_ThrowsArgumentNullException()
     {
         var aligner = new StringSimilarityDiffElementAligner();
-        Assert.Throws<ArgumentNullException>(() => aligner.Align(new List<string?>(), 0, 1, null!, 0, 1));
+        Assert.Throws<ArgumentNullException>(() => aligner.Align([], 0, 1, null!, 0, 1));
     }
 
     [Test]
@@ -102,8 +102,8 @@ public class StringSimilarityDiffElementAlignerTests
         Assert.That(elements, Is.EquivalentTo(new[]
         {
             new DiffElement<string>(0, "Line 1", 0, "Line 1", DiffOperation.Modify),
-            new DiffElement<string>(1, "Line 2", null, Option<string>.None, DiffOperation.Delete),
-            new DiffElement<string>(null, Option<string>.None, 1, "Something else", DiffOperation.Insert),
+            new DiffElement<string>(1, "Line 2", null, Option.None<string>(), DiffOperation.Delete),
+            new DiffElement<string>(null, Option.None<string>(), 1, "Something else", DiffOperation.Insert),
             new DiffElement<string>(2, "Line 3", 2, "Line 3", DiffOperation.Modify),
         }));
     }

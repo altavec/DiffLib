@@ -8,51 +8,38 @@ namespace DiffLib;
 /// This struct holds a single aligned element from the two collections given to <see cref="Diff.AlignElements{T}"/>.
 /// </summary>
 /// <typeparam name="T">The type of elements from the two collections compared.</typeparam>
+/// <param name="elementIndexFromCollection1">Index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.</param>
+/// <param name="elementFromCollection1">The aligned element from the first collection, or <see cref="Option.None{T}"/> if an element from the second collection could not be aligned with anything from the first.</param>
+/// <param name="elementIndexFromCollection2">Index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.</param>
+/// <param name="elementFromCollection2">The aligned element from the second collection, or <see cref="Option.None{T}"/> if an element from the first collection could not be aligned with anything from the second.</param>
+/// <param name="operation">A <see cref="DiffOperation"/> specifying how <paramref name="elementFromCollection1"/> corresponds to <paramref name="elementFromCollection2"/>.</param>
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
+public readonly struct DiffElement<T>(int? elementIndexFromCollection1, Option<T> elementFromCollection1, int? elementIndexFromCollection2, Option<T> elementFromCollection2, DiffOperation operation) : IEquatable<DiffElement<T>>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DiffElement{T}"/> struct.
-    /// Constructs a new instance of <see cref="DiffElement{T}"/>.
-    /// </summary>
-    /// <param name="elementIndexFromCollection1">Index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.</param>
-    /// <param name="elementIndexFromCollection2">Index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.</param>
-    /// <param name="elementFromCollection1">The aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could not be aligned with anything from the first.</param>
-    /// <param name="elementFromCollection2">The aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could not be aligned with anything from the second.</param>
-    /// <param name="operation">A <see cref="DiffOperation"/> specifying how <paramref name="elementFromCollection1"/> corresponds to <paramref name="elementFromCollection2"/>.</param>
-    public DiffElement(int? elementIndexFromCollection1, Option<T> elementFromCollection1, int? elementIndexFromCollection2, Option<T> elementFromCollection2, DiffOperation operation)
-    {
-        this.ElementIndexFromCollection1 = elementIndexFromCollection1;
-        this.ElementFromCollection1 = elementFromCollection1;
-        this.ElementIndexFromCollection2 = elementIndexFromCollection2;
-        this.ElementFromCollection2 = elementFromCollection2;
-        this.Operation = operation;
-    }
-
     /// <summary>
     /// Gets index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.
     /// </summary>
-    public int? ElementIndexFromCollection1 { get; }
+    public int? ElementIndexFromCollection1 { get; } = elementIndexFromCollection1;
 
     /// <summary>
-    /// Gets the aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could not be aligned with anything from the first.
+    /// Gets the aligned element from the first collection, or <see cref="Option.None{T}"/> if an element from the second collection could not be aligned with anything from the first.
     /// </summary>
-    public Option<T> ElementFromCollection1 { get; }
+    public Option<T> ElementFromCollection1 { get; } = elementFromCollection1;
 
     /// <summary>
     /// Gets index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.
     /// </summary>
-    public int? ElementIndexFromCollection2 { get; }
+    public int? ElementIndexFromCollection2 { get; } = elementIndexFromCollection2;
 
     /// <summary>
-    /// Gets the aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could not be aligned with anything from the second.
+    /// Gets the aligned element from the second collection, or <see cref="Option.None{T}"/> if an element from the first collection could not be aligned with anything from the second.
     /// </summary>
-    public Option<T> ElementFromCollection2 { get; }
+    public Option<T> ElementFromCollection2 { get; } = elementFromCollection2;
 
     /// <summary>
     /// Gets a <see cref="DiffOperation"/> specifying how <see cref="ElementFromCollection1"/> corresponds to <see cref="ElementFromCollection2"/>.
     /// </summary>
-    public DiffOperation Operation { get; }
+    public DiffOperation Operation { get; } = operation;
 
     /// <summary>
     /// Implements the equality operator.

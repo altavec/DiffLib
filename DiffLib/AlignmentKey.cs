@@ -5,17 +5,11 @@
 namespace DiffLib;
 
 [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto)]
-internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
+internal readonly struct AlignmentKey(int position1, int position2) : IEquatable<AlignmentKey>
 {
-    public AlignmentKey(int position1, int position2)
-    {
-        this.Position1 = position1;
-        this.Position2 = position2;
-    }
+    public int Position1 { get; } = position1;
 
-    public int Position1 { get; }
-
-    public int Position2 { get; }
+    public int Position2 { get; } = position2;
 
     public readonly bool Equals(AlignmentKey other) => this.Position1 == other.Position1 && this.Position2 == other.Position2;
 

@@ -4,23 +4,15 @@
 
 namespace DiffLib;
 
-internal class AlignmentNode
+internal class AlignmentNode(DiffOperation operation, double similarity, int nodeCount, AlignmentNode? next)
 {
-    public AlignmentNode(DiffOperation operation, double similarity, int nodeCount, AlignmentNode? next)
-    {
-        this.Operation = operation;
-        this.Similarity = similarity;
-        this.NodeCount = nodeCount;
-        this.Next = next;
-    }
+    public DiffOperation Operation { get; } = operation;
 
-    public DiffOperation Operation { get; }
-
-    public double Similarity { get; }
+    public double Similarity { get; } = similarity;
 
     public double AverageSimilarity => this.NodeCount == 0 ? 0.0 : this.Similarity / this.NodeCount;
 
-    public int NodeCount { get; }
+    public int NodeCount { get; } = nodeCount;
 
-    public AlignmentNode? Next { get; }
+    public AlignmentNode? Next { get; } = next;
 }

@@ -4,11 +4,9 @@
 
 namespace DiffLib;
 
-internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
+internal class DiffSectionMergeComparer<T>(IEqualityComparer<T?> comparer) : IEqualityComparer<DiffElement<T>>
 {
-    private readonly IEqualityComparer<T?> comparer;
-
-    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer) => this.comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    private readonly IEqualityComparer<T?> comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 
     public bool Equals(DiffElement<T> x, DiffElement<T> y) => this.comparer.Equals(GetElement(x), GetElement(y));
 

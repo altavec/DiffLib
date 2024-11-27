@@ -8,9 +8,7 @@ namespace DiffLib;
 /// This interface must be implemented by concrete types that should be used during a merge conflict resolution and will be reponsible for working out how to
 /// resolve each individual conflict.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements in the collections being merged.
-/// </typeparam>
+/// <typeparam name="T">The type of elements in the collections being merged.</typeparam>
 public interface IMergeConflictResolver<T>
 {
     /// <summary>

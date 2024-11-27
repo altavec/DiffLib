@@ -129,10 +129,10 @@ public class DiffTests
         Assert.That(elements, Is.EquivalentTo(new[]
         {
             new DiffElement<string?>(0, "Line 1", 0, "Line 1", DiffOperation.Match),
-            new DiffElement<string?>(null, Option<string?>.None, 1, null, DiffOperation.Insert),
+            new DiffElement<string?>(null, Option.None<string?>(), 1, null, DiffOperation.Insert),
             new DiffElement<string?>(1, "Line 2", 2, "Line 2", DiffOperation.Match),
-            new DiffElement<string?>(2, null, null, Option<string?>.None, DiffOperation.Delete),
-            new DiffElement<string?>(3, "Line 3", null, Option<string?>.None, DiffOperation.Delete),
+            new DiffElement<string?>(2, null, null, Option.None<string?>(), DiffOperation.Delete),
+            new DiffElement<string?>(3, "Line 3", null, Option.None<string?>(), DiffOperation.Delete),
             new DiffElement<string?>(4, "Line 4", 3, "Line 4", DiffOperation.Match),
         }));
     }
