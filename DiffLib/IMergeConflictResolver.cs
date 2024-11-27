@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="IMergeConflictResolver.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This interface must be implemented by concrete types that should be used during a merge conflict resolution and will be reponsible for working out how to

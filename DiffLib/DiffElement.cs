@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="DiffElement.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This struct holds a single aligned element from the two collections given to <see cref="Diff.AlignElements{T}"/>.
@@ -9,25 +13,14 @@
 public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="DiffElement{T}"/> struct.
     /// Constructs a new instance of <see cref="DiffElement{T}"/>.
     /// </summary>
-    /// <param name="elementIndexFromCollection1">
-    /// Index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.
-    /// </param>
-    /// <param name="elementIndexFromCollection2">
-    /// Index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.
-    /// </param>
-    /// <param name="elementFromCollection1">
-    /// The aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could
-    /// not be aligned with anything from the first.
-    /// </param>
-    /// <param name="elementFromCollection2">
-    /// The aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could
-    /// not be aligned with anything from the second.
-    /// </param>
-    /// <param name="operation">
-    /// A <see cref="DiffOperation"/> specifying how <paramref name="elementFromCollection1"/> corresponds to <paramref name="elementFromCollection2"/>.
-    /// </param>
+    /// <param name="elementIndexFromCollection1">Index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.</param>
+    /// <param name="elementIndexFromCollection2">Index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.</param>
+    /// <param name="elementFromCollection1">The aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could not be aligned with anything from the first.</param>
+    /// <param name="elementFromCollection2">The aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could not be aligned with anything from the second.</param>
+    /// <param name="operation">A <see cref="DiffOperation"/> specifying how <paramref name="elementFromCollection1"/> corresponds to <paramref name="elementFromCollection2"/>.</param>
     public DiffElement(int? elementIndexFromCollection1, Option<T> elementFromCollection1, int? elementIndexFromCollection2, Option<T> elementFromCollection2, DiffOperation operation)
     {
         this.ElementIndexFromCollection1 = elementIndexFromCollection1;
@@ -38,40 +31,45 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     }
 
     /// <summary>
-    /// Index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.
+    /// Gets index of <see cref="ElementFromCollection1"/> in <c>Collection1</c>.
     /// </summary>
     public int? ElementIndexFromCollection1 { get; }
 
     /// <summary>
-    /// The aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could
-    /// not be aligned with anything from the first.
+    /// Gets the aligned element from the first collection, or <see cref="Option{T}.None"/> if an element from the second collection could not be aligned with anything from the first.
     /// </summary>
-    public Option<T> ElementFromCollection1
-    {
-        get;
-    }
+    public Option<T> ElementFromCollection1 { get; }
 
     /// <summary>
-    /// Index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.
+    /// Gets index of <see cref="ElementFromCollection2"/> in <c>Collection2</c>.
     /// </summary>
     public int? ElementIndexFromCollection2 { get; }
 
     /// <summary>
-    /// The aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could
-    /// not be aligned with anything from the second.
+    /// Gets the aligned element from the second collection, or <see cref="Option{T}.None"/> if an element from the first collection could not be aligned with anything from the second.
     /// </summary>
-    public Option<T> ElementFromCollection2
-    {
-        get;
-    }
+    public Option<T> ElementFromCollection2 { get; }
 
     /// <summary>
-    /// A <see cref="DiffOperation"/> specifying how <see cref="ElementFromCollection1"/> corresponds to <see cref="ElementFromCollection2"/>.
+    /// Gets a <see cref="DiffOperation"/> specifying how <see cref="ElementFromCollection1"/> corresponds to <see cref="ElementFromCollection2"/>.
     /// </summary>
-    public DiffOperation Operation
-    {
-        get;
-    }
+    public DiffOperation Operation { get; }
+
+    /// <summary>
+    /// Implements the equality operator.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    /// <param name="other">The other.</param>
+    /// <returns>The result.</returns>
+    public static bool operator ==(DiffElement<T> element, DiffElement<T> other) => element.Equals(other);
+
+    /// <summary>
+    /// Implements the inequality operator.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    /// <param name="other">The other.</param>
+    /// <returns>The result.</returns>
+    public static bool operator !=(DiffElement<T> element, DiffElement<T> other) => !element.Equals(other);
 
     /// <summary>
     /// Indicates whether the current object is equal to another object of the same type.
@@ -81,10 +79,10 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
     public readonly bool Equals(DiffElement<T> other) => this.ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
-            this.ElementFromCollection1.Equals(other.ElementFromCollection1) &&
-            this.ElementIndexFromCollection2.Equals(other.ElementIndexFromCollection2) &&
-            this.ElementFromCollection2.Equals(other.ElementFromCollection2) &&
-            this.Operation == other.Operation;
+        this.ElementFromCollection1.Equals(other.ElementFromCollection1) &&
+        this.ElementIndexFromCollection2.Equals(other.ElementIndexFromCollection2) &&
+        this.ElementFromCollection2.Equals(other.ElementFromCollection2) &&
+        this.Operation == other.Operation;
 
     /// <summary>
     /// Indicates whether this instance and a specified object are equal.
@@ -92,32 +90,10 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// <returns>
     /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
     /// </returns>
-    /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
+    /// <param name="obj">Another object to compare to. </param><filterpriority>2.</filterpriority>
     public override bool Equals(object? obj) => obj is not null && obj is DiffElement<T> diffElement && this.Equals(diffElement);
 
-    /// <summary>
-    /// Implements the equality operator.
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="other"></param>
-    /// <returns></returns>
-    public static bool operator ==(DiffElement<T> element, DiffElement<T> other) => element.Equals(other);
-
-    /// <summary>
-    /// Implements the inequality operator.
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="other"></param>
-    /// <returns></returns>
-    public static bool operator !=(DiffElement<T> element, DiffElement<T> other) => !element.Equals(other);
-
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>
-    /// A 32-bit signed integer that is the hash code for this instance.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
+    /// <inheritdoc />
     public override readonly int GetHashCode()
     {
         unchecked
@@ -131,13 +107,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
         }
     }
 
-    /// <summary>
-    /// Returns the fully qualified type name of this instance.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"/> containing a fully qualified type name.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
+    /// <inheritdoc />
     public override readonly string ToString() => this.Operation switch
     {
         DiffOperation.Match => $"same: {this.ElementFromCollection1}",

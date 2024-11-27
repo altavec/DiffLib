@@ -70,11 +70,8 @@ dotnet_style_qualification_for_property = true
 dotnet_style_qualification_for_method = true
 dotnet_style_qualification_for_event = true
 
-# true = prefer C# keywords instead of .NET types for built-in primitive types (int, string, etc.)
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
-
-# false = prefer the .NET types, thus "Int32.Parse" instead of "int.Parse"
-dotnet_style_predefined_type_for_member_access = false:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
 
 # true = prefer to use object-initializers
 dotnet_style_object_initializer = true:suggestion

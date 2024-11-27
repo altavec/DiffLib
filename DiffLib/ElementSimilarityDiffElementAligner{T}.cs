@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="ElementSimilarityDiffElementAligner{T}.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This class implements a <see cref="IDiffElementAligner{T}"/> strategy that will tryto work out the best way to align two portions,
@@ -12,7 +16,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     // is a recursive piece of code that can quickly balloon out of control, so
     // too big sections will take a long time to process. I will experiment more
     // with this number to see what is feasible.
-    private const int _MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd = 15;
+    private const int MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd = 15;
 
     private readonly ElementSimilarity<T> similarityFunc;
 
@@ -21,7 +25,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     private readonly IDiffElementAligner<T> basicAligner = new BasicInsertDeleteDiffElementAligner<T>();
 
     /// <summary>
-    /// Constructs a new <see cref="ElementSimilarityDiffElementAligner{T}"/>.
+    /// Initializes a new instance of the <see cref="ElementSimilarityDiffElementAligner{T}"/> class.
     /// </summary>
     /// <param name="similarityFunc">A <see cref="ElementSimilarity{T}"/> delegate that is used to work out how similar two elements are.</param>
     /// <param name="modificationThreshold">A threshold value used to determine if aligned elements are considered replacements or modifications.
@@ -36,7 +40,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
@@ -68,7 +72,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
         // "Optimization", too big input-sets will have to be dropped for now, will revisit this
         // number in the future to see if I can bring it up, or possible that I don't need it,
         // but since this is a recursive solution the combinations could get big fast.
-        if (length1 + length2 > _MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd)
+        if (length1 + length2 > MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd)
         {
             return [];
         }
@@ -105,8 +109,10 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
             bestNode = bestNode.Next;
         }
+
         return result;
     }
 

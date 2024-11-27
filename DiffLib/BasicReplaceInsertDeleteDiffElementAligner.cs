@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="BasicReplaceInsertDeleteDiffElementAligner.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 using static System.Math;
 
@@ -13,7 +17,7 @@ public class BasicReplaceInsertDeleteDiffElementAligner<T> : BasicInsertDeleteDi
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public override IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)

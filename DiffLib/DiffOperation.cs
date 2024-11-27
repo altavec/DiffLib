@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="DiffOperation.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This enum is returned as part of <see cref="DiffElement{T}"/>, specifying how
@@ -39,5 +43,5 @@ public enum DiffOperation
     /// <remarks>
     /// Typical example would be two lines of text where only bits and pieces have been altered.
     /// </remarks>
-    Modify
+    Modify,
 }

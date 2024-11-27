@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="GetHashCodeExtension.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 internal static class GetHashCodeExtension
 {

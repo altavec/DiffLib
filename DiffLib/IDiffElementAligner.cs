@@ -1,3 +1,7 @@
+// <copyright file="IDiffElementAligner.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
 namespace DiffLib;
 
 /// <summary>

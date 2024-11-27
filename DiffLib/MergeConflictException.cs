@@ -1,3 +1,7 @@
+// <copyright file="MergeConflictException.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
 namespace DiffLib;
 
 /// <summary>
@@ -6,7 +10,7 @@ namespace DiffLib;
 public class MergeConflictException : Exception
 {
     /// <summary>
-    /// Constructs a new instance of <see cref="MergeConflictException"/> given the specific <paramref name="message"/>.
+    /// Initializes a new instance of the <see cref="MergeConflictException"/> class.
     /// </summary>
     /// <param name="message">The message indicating what the reason for the failure was.</param>
     /// <param name="commonBase">The common base of the elements involved in the conflict.</param>
@@ -26,17 +30,17 @@ public class MergeConflictException : Exception
     }
 
     /// <summary>
-    /// The common base of the elements involved in the conflict.
+    /// Gets the common base of the elements involved in the conflict.
     /// </summary>
     public object?[] CommonBase { get; }
 
     /// <summary>
-    /// The left side of the conflict.
+    /// Gets the left side of the conflict.
     /// </summary>
     public object?[] Left { get; }
 
     /// <summary>
-    /// The right side of the conflict.
+    /// Gets the right side of the conflict.
     /// </summary>
     public object?[] Right { get; }
 }

@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="LongestCommonSubsectionDiff.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 internal static class LongestCommonSubsectionDiff
 {
@@ -43,7 +47,6 @@ internal static class LongestCommonSubsectionDiff
             }
             else
             {
-
                 if (lcs.Find(lower1, upper1, lower2, upper2, out var position1, out var position2, out var length))
                 {
                     // Recursively apply calculation to portion before common subsequence

@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="AlignmentKey.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
 {
@@ -8,15 +12,9 @@ internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
         this.Position2 = position2;
     }
 
-    public int Position1
-    {
-        get;
-    }
+    public int Position1 { get; }
 
-    public int Position2
-    {
-        get;
-    }
+    public int Position2 { get; }
 
     public readonly bool Equals(AlignmentKey other) => this.Position1 == other.Position1 && this.Position2 == other.Position2;
 

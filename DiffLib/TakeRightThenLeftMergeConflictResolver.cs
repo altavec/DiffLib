@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="TakeRightThenLeftMergeConflictResolver.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This implementation of <see cref="IMergeConflictResolver{T}"/> takes the left side then takes the right side.

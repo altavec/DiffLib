@@ -1,14 +1,18 @@
-﻿namespace DiffLib;
+﻿// <copyright file="DiffSectionMergeComparer.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
 {
-    private readonly IEqualityComparer<T?> _Comparer;
+    private readonly IEqualityComparer<T?> comparer;
 
-    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer) => this._Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer) => this.comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 
-    public bool Equals(DiffElement<T> x, DiffElement<T> y) => this._Comparer.Equals(this.GetElement(x), this.GetElement(y));
+    public bool Equals(DiffElement<T> x, DiffElement<T> y) => this.comparer.Equals(this.GetElement(x), this.GetElement(y));
 
-    public int GetHashCode(DiffElement<T> obj) => this._Comparer.GetHashCode(this.GetElement(obj));
+    public int GetHashCode(DiffElement<T> obj) => this.comparer.GetHashCode(this.GetElement(obj));
 
     private T? GetElement(DiffElement<T> diffElement) => diffElement switch
     {

@@ -1,15 +1,42 @@
-﻿namespace DiffLib;
+﻿// <copyright file="Merge.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
 
-internal class Merge<T> : IEnumerable<T?>
+namespace DiffLib;
+
+/// <summary>
+/// Static API class for the merge portion of DiffLib.
+/// </summary>
+public static class Merge
 {
-    private readonly IMergeConflictResolver<T?> _ConflictResolver;
-    private readonly List<DiffSection> _MergeSections;
+    /// <summary>
+    /// Performs a merge using a 3-way merge, returning the final merged output.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collections being merged.</typeparam>
+    /// <param name="commonBase">The common base/ancestor of both <paramref name="left"/> and <paramref name="right"/>.</param>
+    /// <param name="left">The left side being merged with the <paramref name="right"/>.</param>
+    /// <param name="right">The right side being merged with the <paramref name="left"/>.</param>
+    /// <param name="aligner">A <see cref="IDiffElementAligner{T}"/> implementation that will be responsible for lining up common vs. left and common vs. right as well as left vs. right during the merge.</param>
+    /// <param name="conflictResolver">A <see cref="IMergeConflictResolver{T}"/> implementation that will be used to resolve conflicting modifications between left and right.</param>
+    /// <param name="comparer">A <see cref="IEqualityComparer{T}"/> implementation that will be used to compare elements of all the collections. If <see langword="null"/> is specified then <see cref="EqualityComparer{T}.Default"/> will be used.</param>
+    /// <returns>The final merged collection of elements from <paramref name="left"/> and <paramref name="right"/>.</returns>
+    /// <exception cref="MergeConflictException">The <paramref name="conflictResolver"/> threw a <see cref="MergeConflictException"/> to indicate a failure to resolve a conflict.</exception>
+    public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default) => Perform(commonBase, left, right, new DiffOptions(), aligner, conflictResolver, comparer);
 
-    private readonly List<DiffElement<T>> _DiffCommonBaseToLeft;
-
-    private readonly List<DiffElement<T>> _DiffCommonBaseToRight;
-
-    public Merge(IList<T> commonBase, IList<T> left, IList<T> right, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?> comparer, DiffOptions diffOptions)
+    /// <summary>
+    /// Performs a merge using a 3-way merge, returning the final merged output.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collections being merged.</typeparam>
+    /// <param name="commonBase">The common base/ancestor of both <paramref name="left"/> and <paramref name="right"/>.</param>
+    /// <param name="left">The left side being merged with the <paramref name="right"/>.</param>
+    /// <param name="right">The right side being merged with the <paramref name="left"/>.</param>
+    /// <param name="diffOptions">A <see cref="DiffOptions"/> object specifying options to the diff algorithm, or <see langword="null"/> if defaults should be used.</param>
+    /// <param name="aligner">A <see cref="IDiffElementAligner{T}"/> implementation that will be responsible for lining up common vs. left and common vs. right as well as left vs. right during the merge.</param>
+    /// <param name="conflictResolver">A <see cref="IMergeConflictResolver{T}"/> implementation that will be used to resolve conflicting modifications between left and right.</param>
+    /// <param name="comparer">A <see cref="IEqualityComparer{T}"/> implementation that will be used to compare elements of all the collections. If <see langword="null"/> is specified then <see cref="EqualityComparer{T}.Default"/> will be used.</param>
+    /// <returns>The final merged collection of elements from <paramref name="left"/> and <paramref name="right"/>.</returns>
+    /// <exception cref="MergeConflictException">The <paramref name="conflictResolver"/> threw a <see cref="MergeConflictException"/> to indicate a failure to resolve a conflict.</exception>
+    public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, DiffOptions? diffOptions, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default)
     {
         if (commonBase is null)
         {
@@ -31,185 +58,14 @@ internal class Merge<T> : IEnumerable<T?>
             throw new ArgumentNullException(nameof(aligner));
         }
 
-        if (comparer is null)
+        if (conflictResolver is null)
         {
-            throw new ArgumentNullException(nameof(comparer));
+            throw new ArgumentNullException(nameof(conflictResolver));
         }
 
-        if (diffOptions is null)
-        {
-            throw new ArgumentNullException(nameof(diffOptions));
-        }
+        diffOptions ??= new DiffOptions();
+        comparer ??= EqualityComparer<T?>.Default;
 
-        this._ConflictResolver = conflictResolver ?? throw new ArgumentNullException(nameof(conflictResolver));
-
-        var diffCommonBaseToLeft = Diff.AlignElements(commonBase, left, Diff.CalculateSections(commonBase, left, diffOptions, comparer), aligner).ToList();
-        this._DiffCommonBaseToLeft = diffCommonBaseToLeft;
-
-        var diffCommonBaseToRight = Diff.AlignElements(commonBase, right, Diff.CalculateSections(commonBase, right, diffOptions, comparer), aligner).ToList();
-        this._DiffCommonBaseToRight = diffCommonBaseToRight;
-
-        var mergeSections = Diff.CalculateSections(diffCommonBaseToLeft!, diffCommonBaseToRight!, diffOptions, new DiffSectionMergeComparer<T>(comparer)).ToList();
-        this._MergeSections = mergeSections;
+        return new Merge<T>(commonBase, left, right, aligner, conflictResolver, comparer, diffOptions);
     }
-
-    public IEnumerator<T?> GetEnumerator()
-    {
-        var leftIndex = 0;
-        var rightIndex = 0;
-        foreach (var section in this._MergeSections)
-        {
-            if (section.IsMatch)
-            {
-                for (var index = 0; index < section.LengthInCollection1; index++)
-                {
-                    foreach (var item in this.ResolveMatchingElementFromBothSides(leftIndex++, rightIndex++))
-                    {
-                        yield return item;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var item in this.ProcessNonMatchingElementsFromBothSides(section, rightIndex, leftIndex))
-                {
-                    yield return item;
-                }
-
-                leftIndex += section.LengthInCollection1;
-                rightIndex += section.LengthInCollection2;
-            }
-        }
-    }
-
-    private IEnumerable<T?> ProcessNonMatchingElementsFromBothSides(DiffSection section, int rightIndex, int leftIndex)
-    {
-        if (section.LengthInCollection1 == 0)
-        {
-            // right side inserted, right side wins
-            for (var index = 0; index < section.LengthInCollection2; index++)
-            {
-                yield return this._DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value;
-            }
-        }
-        else if (section.LengthInCollection2 == 0)
-        {
-            // left side inserted, left side wins
-            for (var index = 0; index < section.LengthInCollection1; index++)
-            {
-                yield return this._DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value;
-            }
-        }
-        else
-        {
-            var leftSide = new List<T?>();
-            for (var index = 0; index < section.LengthInCollection1; index++)
-            {
-                leftSide.Add(this._DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value);
-            }
-
-            var rightSide = new List<T?>();
-            for (var index = 0; index < section.LengthInCollection2; index++)
-            {
-                rightSide.Add(this._DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value);
-            }
-
-            foreach (var item in this._ConflictResolver.Resolve([], leftSide, rightSide))
-            {
-                yield return item;
-            }
-        }
-    }
-
-    private IEnumerable<T?> ResolveMatchingElementFromBothSides(int leftIndex, int rightIndex)
-    {
-        var commonBase = this._DiffCommonBaseToLeft[leftIndex].ElementFromCollection1.Value;
-
-        var leftOp = this._DiffCommonBaseToLeft[leftIndex].Operation;
-        if (leftOp == DiffOperation.Replace)
-        {
-            leftOp = DiffOperation.Modify;
-        }
-
-        var leftSide = this._DiffCommonBaseToLeft[leftIndex].ElementFromCollection2.GetValueOrDefault()!;
-
-        var rightOp = this._DiffCommonBaseToRight[rightIndex].Operation;
-        if (rightOp == DiffOperation.Replace)
-        {
-            rightOp = DiffOperation.Modify;
-        }
-
-        var rightSide = this._DiffCommonBaseToRight[rightIndex].ElementFromCollection2.GetValueOrDefault()!;
-
-        var resolution = this.GetResolution(commonBase, leftOp, leftSide, rightOp, rightSide);
-        return resolution;
-    }
-
-    private IEnumerable<T?> GetResolution(T? commonBase, DiffOperation leftOp, T? leftSide, DiffOperation rightOp, T? rightSide)
-    {
-        switch (leftOp)
-        {
-            case DiffOperation.Match:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [leftSide];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return [];
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return [rightSide];
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
-
-                break;
-
-            case DiffOperation.Insert:
-                break;
-
-            case DiffOperation.Delete:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return [];
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return this._ConflictResolver.Resolve([commonBase], [], [rightSide]);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
-
-                break;
-
-            case DiffOperation.Replace:
-            case DiffOperation.Modify:
-                switch (rightOp)
-                {
-                    case DiffOperation.Match:
-                        return [leftSide];
-                    case DiffOperation.Insert:
-                        break;
-                    case DiffOperation.Delete:
-                        return this._ConflictResolver.Resolve([commonBase], [leftSide], []);
-                    case DiffOperation.Replace:
-                    case DiffOperation.Modify:
-                        return this._ConflictResolver.Resolve([commonBase], [leftSide], [rightSide]);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
-                }
-
-                break;
-        }
-
-        throw new MergeConflictException($"Unable to process {leftOp} vs. {rightOp}", [commonBase], [leftSide], [rightSide]);
-    }
-
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.GetEnumerator();
 }

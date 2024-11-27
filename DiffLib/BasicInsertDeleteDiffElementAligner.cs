@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="BasicInsertDeleteDiffElementAligner.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This class can be used as a parameter to <see cref="Diff.AlignElements{T}"/>. It will basically output anything present in the first collection
@@ -12,7 +16,7 @@ public class BasicInsertDeleteDiffElementAligner<T> : IDiffElementAligner<T>
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public virtual IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)

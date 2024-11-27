@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="Diff.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// Static API class for DiffLib.
@@ -15,7 +19,7 @@ public static class Diff
     /// <returns>A collection of <see cref="DiffSection"/> values, containing the sections found.</returns>
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, IEqualityComparer<T>? comparer = default) => CalculateSections(collection1, collection2, new DiffOptions(), comparer);
@@ -31,7 +35,7 @@ public static class Diff
     /// <returns>A collection of <see cref="DiffSection"/> values, containing the sections found.</returns>
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, DiffOptions? options, IEqualityComparer<T>? comparer = default)
@@ -63,25 +67,22 @@ public static class Diff
     /// <param name="aligner">An alignment strategy, provided through the <see cref="IDiffElementAligner{T}"/> interface.</param>
     /// <returns>A collection of <see cref="DiffElement{T}"/> values, specifying aligned elements on an element-by-element basis.</returns>
     /// <exception cref="ArgumentNullException">
-    /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <paramref name="collection1"/> is <see langword="null"/>.
+    /// <para>- or -.</para>
     /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="diffSections"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
-    /// <para><paramref name="aligner"/> is <see langword="null"/>.</para>
+    /// <para>- or -.</para>
+    /// <para><paramrsef name="aligner"/> is <see langword="null"/>.</para>
     /// </exception>
-    public static IEnumerable<DiffElement<T>> AlignElements<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
+    public static IEnumerable<DiffElement<T>> AlignElements<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner) => (collection1, collection2, diffSections, aligner) switch
     {
-        return (collection1, collection2, diffSections, aligner) switch
-        {
-            (null, _, _, _) => throw new ArgumentNullException(nameof(collection1)),
-            (_, null, _, _) => throw new ArgumentNullException(nameof(collection2)),
-            (_, _, null, _) => throw new ArgumentNullException(nameof(diffSections)),
-            (_, _, _, null) => throw new ArgumentNullException(nameof(aligner)),
-            _=> AlignElementsImplementation(collection1, collection2, diffSections, aligner),
-        };
-    }
+        (null, _, _, _) => throw new ArgumentNullException(nameof(collection1)),
+        (_, null, _, _) => throw new ArgumentNullException(nameof(collection2)),
+        (_, _, null, _) => throw new ArgumentNullException(nameof(diffSections)),
+        (_, _, _, null) => throw new ArgumentNullException(nameof(aligner)),
+        _ => AlignElementsImplementation(collection1, collection2, diffSections, aligner),
+    };
 
     private static IEnumerable<DiffElement<T>> AlignElementsImplementation<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
     {

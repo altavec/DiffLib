@@ -1,3 +1,7 @@
+// <copyright file="DiffSection.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
 namespace DiffLib;
 
 /// <summary>
@@ -6,18 +10,11 @@ namespace DiffLib;
 public readonly struct DiffSection : IEquatable<DiffSection>
 {
     /// <summary>
-    /// Construct a new instance of <see cref="DiffSection"/>.
+    /// Initializes a new instance of the <see cref="DiffSection"/> struct.
     /// </summary>
-    /// <param name="isMatch">
-    /// <c>true</c> if a match was found between the two collections;
-    /// otherwise, <c>false</c>.
-    /// </param>
-    /// <param name="lengthInCollection1">
-    /// How many elements from the first collection this section contains.
-    /// </param>
-    /// <param name="lengthInCollection2">
-    /// How many elements from the second collection this section contains.
-    /// </param>
+    /// <param name="isMatch"><see langword="true"/> if a match was found between the two collections; otherwise, <see langword="false"/>.</param>
+    /// <param name="lengthInCollection1">How many elements from the first collection this section contains.</param>
+    /// <param name="lengthInCollection2">How many elements from the second collection this section contains.</param>
     public DiffSection(bool isMatch, int lengthInCollection1, int lengthInCollection2)
     {
         this.IsMatch = isMatch;
@@ -30,8 +27,8 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// portions that could not be matched.
     /// </summary>
     /// <value>
-    /// <c>true</c> if a match was found between the two collections;
-    /// otherwise, <c>false</c>.
+    /// <see langword="true"/> if a match was found between the two collections;
+    /// otherwise, <see langword="false"/>.
     /// </value>
     public bool IsMatch
     {
@@ -39,46 +36,38 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     }
 
     /// <summary>
-    /// How many elements from the first collection this section contains.
+    /// Gets the number of elements from the first collection this section contains.
     /// </summary>
-    public int LengthInCollection1
-    {
-        get;
-    }
+    public int LengthInCollection1 { get; }
 
     /// <summary>
-    /// How many elements from the second collection this section contains.
+    /// Gets the number of elements from the second collection this section contains.
     /// </summary>
-    public int LengthInCollection2
-    {
-        get;
-    }
+    public int LengthInCollection2 { get; }
 
     /// <summary>
-    /// Indicates whether the current object is equal to another object of the same type.
+    /// Implements the equality operator.
     /// </summary>
-    /// <returns>
-    /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// </returns>
-    /// <param name="other">An object to compare with this object.</param>
+    /// <param name="section1">The first section.</param>
+    /// <param name="section2">The second section.</param>
+    /// <returns>The result.</returns>
+    public static bool operator ==(DiffSection section1, DiffSection section2) => section1.Equals(section2);
+
+    /// <summary>
+    /// Implements the inequality operator.
+    /// </summary>
+    /// <param name="section1">The first section.</param>
+    /// <param name="section2">The second section.</param>
+    /// <returns>The result.</returns>
+    public static bool operator !=(DiffSection section1, DiffSection section2) => !section1.Equals(section2);
+
+    /// <inheritdoc/>
     public readonly bool Equals(DiffSection other) => this.IsMatch == other.IsMatch && this.LengthInCollection1 == other.LengthInCollection1 && this.LengthInCollection2 == other.LengthInCollection2;
 
-    /// <summary>
-    /// Indicates whether this instance and a specified object are equal.
-    /// </summary>
-    /// <returns>
-    /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
-    /// </returns>
-    /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is not null && obj is DiffSection diffSection && this.Equals(diffSection);
 
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>
-    /// A 32-bit signed integer that is the hash code for this instance.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
+    /// <inheritdoc/>
     public override readonly int GetHashCode()
     {
         unchecked
@@ -90,29 +79,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
         }
     }
 
-    /// <summary>
-    /// Implements the equality operator.
-    /// </summary>
-    /// <param name="section1"></param>
-    /// <param name="section2"></param>
-    /// <returns></returns>
-    public static bool operator ==(DiffSection section1, DiffSection section2) => section1.Equals(section2);
-
-    /// <summary>
-    /// Implements the inequality operator.
-    /// </summary>
-    /// <param name="section1"></param>
-    /// <param name="section2"></param>
-    /// <returns></returns>
-    public static bool operator !=(DiffSection section1, DiffSection section2) => !section1.Equals(section2);
-
-    /// <summary>
-    /// Returns the fully qualified type name of this instance.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"/> containing a fully qualified type name.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
+    /// <inheritdoc/>
     public override readonly string ToString() => this switch
     {
         { IsMatch: true } => $"{this.LengthInCollection1} matched",

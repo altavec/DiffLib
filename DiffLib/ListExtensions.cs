@@ -1,4 +1,8 @@
-﻿namespace DiffLib;
+﻿// <copyright file="ListExtensions.cs" company="Altavec">
+// Copyright (c) Altavec. All rights reserved.
+// </copyright>
+
+namespace DiffLib;
 
 /// <summary>
 /// This class adds extension methods for <see cref="IList{T}"/>.
@@ -16,7 +20,7 @@ public static class ListExtensions
     /// <param name="aligner">The <see cref="IDiffElementAligner{T}"/> to use when aligning elements. If not specified/<see langword="null"/>, <see cref="BasicReplaceInsertDeleteDiffElementAligner{T}"/> will be used.</param>
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="target"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="source"/> is <see langword="null"/>.</para>
     /// </exception>
     /// <remarks>
@@ -38,7 +42,7 @@ public static class ListExtensions
     /// <param name="aligner">The <see cref="IDiffElementAligner{T}"/> to use when aligning elements. If not specified/<see langword="null"/>, <see cref="BasicReplaceInsertDeleteDiffElementAligner{T}"/> will be used.</param>
     /// <exception cref="ArgumentNullException">
     /// <para><paramref name="target"/> is <see langword="null"/>.</para>
-    /// <para>- or -</para>
+    /// <para>- or -.</para>
     /// <para><paramref name="source"/> is <see langword="null"/>.</para>
     /// </exception>
     /// <remarks>
