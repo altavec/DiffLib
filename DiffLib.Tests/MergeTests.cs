@@ -53,7 +53,7 @@ namespace DiffLib.Tests
 
             var result = Merge.Perform(common, left, right, new DiffOptions { EnablePatienceOptimization = false }, new BasicReplaceInsertDeleteDiffElementAligner<char>(), new AbortIfConflictResolver<char>()).ToList();
 
-            CollectionAssert.AreEqual(expected, result);
+            Assert.That(result, Is.EquivalentTo(expected));
         }
     }
 }

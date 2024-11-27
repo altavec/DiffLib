@@ -49,12 +49,12 @@ namespace DiffLib.Tests
 
             var elements = aligner.Align(collection1, 0, collection1.Count, collection2, 0, collection2.Count).ToArray();
 
-            CollectionAssert.AreEqual(new[]
+            Assert.That(elements, Is.EquivalentTo(new[]
             {
                 new DiffElement<int>(0, 1, null, Option<int>.None, DiffOperation.Delete),
                 new DiffElement<int>(1, 2, null, Option<int>.None, DiffOperation.Delete),
                 new DiffElement<int>(2, 3, null, Option<int>.None, DiffOperation.Delete),
-            }, elements);
+            }));
         }
 
         [Test]
@@ -72,12 +72,12 @@ namespace DiffLib.Tests
 
             var elements = aligner.Align(collection1, 0, collection1.Count, collection2, 0, collection2.Count).ToArray();
 
-            CollectionAssert.AreEqual(new[]
+            Assert.That(elements, Is.EquivalentTo(new[]
             {
                 new DiffElement<int>(null, Option<int>.None, 0, 1, DiffOperation.Insert),
                 new DiffElement<int>(null, Option<int>.None, 1, 2, DiffOperation.Insert),
                 new DiffElement<int>(null, Option<int>.None, 2, 3, DiffOperation.Insert),
-            }, elements);
+            }));
         }
     }
 }

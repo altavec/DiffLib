@@ -79,7 +79,7 @@ namespace DiffLib.Tests
 
             DiffSection[] diff = Diff.CalculateSections(text1.ToCharArray(), text2.ToCharArray()).ToArray();
 
-            CollectionAssert.AreEqual(diff, new[]
+            Assert.That(diff, Is.EquivalentTo(new[]
             {
                 new DiffSection(isMatch: true, lengthInCollection1: 9, lengthInCollection2: 9), // same        "This is a"
                 new DiffSection(isMatch: false, lengthInCollection1: 0, lengthInCollection2: 6), // add        "nother"
@@ -90,7 +90,7 @@ namespace DiffLib.Tests
                 new DiffSection(isMatch: true, lengthInCollection1: 4, lengthInCollection2: 4), // same        "text"
                 new DiffSection(isMatch: false, lengthInCollection1: 16, lengthInCollection2: 0), // delete    " that is deleted"
                 new DiffSection(isMatch: true, lengthInCollection1: 1, lengthInCollection2: 1), // same        "."
-            });
+            }));
         }
 
         [Test]
@@ -108,14 +108,14 @@ namespace DiffLib.Tests
 
             DiffSection[] sections = Diff.CalculateSections(collection1, collection2).ToArray();
 
-            CollectionAssert.AreEqual(sections, new[]
+            Assert.That(sections, Is.EquivalentTo(new[]
             {
                 new DiffSection(isMatch: true, lengthInCollection1: 1, lengthInCollection2: 1),
                 new DiffSection(isMatch: false, lengthInCollection1: 0, lengthInCollection2: 1),
                 new DiffSection(isMatch: true, lengthInCollection1: 1, lengthInCollection2: 1),
                 new DiffSection(isMatch: false, lengthInCollection1: 2, lengthInCollection2: 0),
                 new DiffSection(isMatch: true, lengthInCollection1: 1, lengthInCollection2: 1),
-            });
+            }));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace DiffLib.Tests
             DiffSection[] sections = Diff.CalculateSections(collection1, collection2).ToArray();
             var elements = Diff.AlignElements(collection1, collection2, sections, new StringSimilarityDiffElementAligner());
 
-            CollectionAssert.AreEqual(new[]
+            Assert.That(elements, Is.EquivalentTo(new[]
             {
                 new DiffElement<string?>(0, "Line 1", 0, "Line 1", DiffOperation.Match),
                 new DiffElement<string?>(null, Option<string?>.None, 1, null, DiffOperation.Insert),
@@ -142,7 +142,7 @@ namespace DiffLib.Tests
                 new DiffElement<string?>(2, null, null, Option<string?>.None, DiffOperation.Delete),
                 new DiffElement<string?>(3, "Line 3", null, Option<string?>.None, DiffOperation.Delete),
                 new DiffElement<string?>(4, "Line 4", 3, "Line 4", DiffOperation.Match),
-            }, elements);
+            }));
         }
     }
 }
