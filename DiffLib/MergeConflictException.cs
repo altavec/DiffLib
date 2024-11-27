@@ -8,18 +8,10 @@ public class MergeConflictException : Exception
     /// <summary>
     /// Constructs a new instance of <see cref="MergeConflictException"/> given the specific <paramref name="message"/>.
     /// </summary>
-    /// <param name="message">
-    /// The message indicating what the reason for the failure was.
-    /// </param>
-    /// <param name="commonBase">
-    /// The common base of the elements involved in the conflict.
-    /// </param>
-    /// <param name="left">
-    /// The left side of the conflict.
-    /// </param>
-    /// <param name="right">
-    /// The right side of the conflict.
-    /// </param>
+    /// <param name="message">The message indicating what the reason for the failure was.</param>
+    /// <param name="commonBase">The common base of the elements involved in the conflict.</param>
+    /// <param name="left">The left side of the conflict.</param>
+    /// <param name="right">The right side of the conflict.</param>
     public MergeConflictException(string message, IEnumerable<object?> commonBase, IEnumerable<object?> left, IEnumerable<object?> right)
         : base(message)
     {

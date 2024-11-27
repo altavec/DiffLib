@@ -1,12 +1,9 @@
 namespace DiffLib;
 
 /// <summary>
-/// This implementation of <see cref="IMergeConflictResolver{T}"/> resolves a conflict by taking the left side and then taking the right side. In the case
-/// where both cases are identical, only the left side is taken.
+/// This implementation of <see cref="IMergeConflictResolver{T}"/> resolves a conflict by taking the left side and then taking the right side. In the case where both cases are identical, only the left side is taken.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements in the collections being merged.
-/// </typeparam>
+/// <typeparam name="T">The type of elements in the collections being merged.</typeparam>
 public class TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver<T> : IMergeConflictResolver<T>
 {
     private readonly IEqualityComparer<T> _EqualityComparer;
@@ -14,10 +11,7 @@ public class TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver<T> : I
     /// <summary>
     /// Constructs a new instance of <see cref="TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver{T}"/> using the specified <paramref name="equalityComparer"/>.
     /// </summary>
-    /// <param name="equalityComparer">
-    /// The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If
-    /// <c>null</c> then <see cref="EqualityComparer{T}.Default"/> is used.
-    /// </param>
+    /// <param name="equalityComparer">The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If <see langword="null"/> then <see cref="EqualityComparer{T}.Default"/> is used.</param>
     public TakeLeftThenRightIfRightDiffersFromLeftMergeConflictResolver(IEqualityComparer<T>? equalityComparer = default) => this._EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
 
     /// <inheritdoc />

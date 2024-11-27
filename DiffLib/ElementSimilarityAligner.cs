@@ -1,13 +1,10 @@
 ﻿namespace DiffLib;
 
 /// <summary>
-/// This class implements a <see cref="IDiffElementAligner{T}"/> strategy that will try
-/// to work out the best way to align two portions, depending on individual element
-/// similarity.
+/// This class implements a <see cref="IDiffElementAligner{T}"/> strategy that will tryto work out the best way to align two portions,
+/// depending on individual element similarity.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements in the two collections to align.
-/// </typeparam>
+/// <typeparam name="T">The type of elements in the two collections to align.</typeparam>
 public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
 {
     // If the combined lengths of the two change-sections is more than this number of
@@ -17,60 +14,30 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     // with this number to see what is feasible.
     private const int _MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd = 15;
 
-    private readonly ElementSimilarity<T> _SimilarityFunc;
+    private readonly ElementSimilarity<T> similarityFunc;
 
-    private readonly double _ModificationThreshold;
+    private readonly double modificationThreshold;
 
-    private readonly IDiffElementAligner<T> _BasicAligner = new BasicInsertDeleteDiffElementAligner<T>();
+    private readonly IDiffElementAligner<T> basicAligner = new BasicInsertDeleteDiffElementAligner<T>();
 
     /// <summary>
     /// Constructs a new <see cref="ElementSimilarityDiffElementAligner{T}"/>.
     /// </summary>
-    /// <param name="similarityFunc">
-    /// A <see cref="ElementSimilarity{T}"/> delegate that is used to work out how similar two elements are.
-    /// </param>
-    /// <param name="modificationThreshold">
-    /// A threshold value used to determine if aligned elements are considered replacements or modifications. If
-    /// two items are more similar than the threshold specifies (similarity > threshold), then it results in
-    /// a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.
-    /// </param>
-    /// <exception cref="ArgumentNullException">
-    /// <para><paramref name="similarityFunc"/> is <c>null</c>.</para>
-    /// </exception>
+    /// <param name="similarityFunc">A <see cref="ElementSimilarity{T}"/> delegate that is used to work out how similar two elements are.</param>
+    /// <param name="modificationThreshold">A threshold value used to determine if aligned elements are considered replacements or modifications.
+    /// If two items are more similar than the threshold specifies (similarity > threshold), then it results in a <see cref="DiffOperation.Modify"/>, otherwise it results in a <see cref="DiffOperation.Replace"/>.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="similarityFunc"/> is <see langword="null"/>.</exception>
     public ElementSimilarityDiffElementAligner(ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333)
     {
-        this._SimilarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
-        this._ModificationThreshold = modificationThreshold;
+        this.similarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
+        this.modificationThreshold = modificationThreshold;
     }
 
-    /// <summary>
-    /// Align the specified portions of the two collections and output element-by-element operations for the aligned elements.
-    /// </summary>
-    /// <param name="collection1">
-    /// The first collection.
-    /// </param>
-    /// <param name="start1">
-    /// The start of the portion to look at in the first collection, <paramref name="collection1"/>.
-    /// </param>
-    /// <param name="length1">
-    /// The length of the portion to look at in the first collection, <paramref name="collection1"/>.
-    /// </param>
-    /// <param name="collection2">
-    /// The second collection.
-    /// </param>
-    /// <param name="start2">
-    /// The start of the portion to look at in the second collection, <paramref name="collection2"/>.
-    /// </param>
-    /// <param name="length2">
-    /// The length of the portion to look at in the second collection, <paramref name="collection2"/>.
-    /// </param>
-    /// <returns>
-    /// A collection of <see cref="DiffElement{T}"/> values, one for each aligned element.
-    /// </returns>
+    /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// <para><paramref name="collection1"/> is <c>null</c>.</para>
+    /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
     /// <para>- or -</para>
-    /// <para><paramref name="collection2"/> is <c>null</c>.</para>
+    /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
     public IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
     {
@@ -93,7 +60,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
             }
         }
 
-        return this._BasicAligner.Align(collection1, start1, length1, collection2, start2, length2);
+        return this.basicAligner.Align(collection1, start1, length1, collection2, start2, length2);
     }
 
     private List<DiffElement<T>> TryAlignSections(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
@@ -177,9 +144,9 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
 
             // Calculate how the results will be if we replace or modify an element
             var restAfterChange = this.CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2 + 1, upper2);
-            var similarity = this._SimilarityFunc(collection1[lower1], collection2[lower2]);
+            var similarity = this.similarityFunc(collection1[lower1], collection2[lower2]);
             AlignmentNode? resultChange = null;
-            if (similarity >= this._ModificationThreshold)
+            if (similarity >= this.modificationThreshold)
             {
                 resultChange = new AlignmentNode(DiffOperation.Modify, similarity + restAfterInsert.Similarity, restAfterChange.NodeCount + 1, restAfterChange);
             }

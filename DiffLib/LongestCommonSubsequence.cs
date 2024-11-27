@@ -56,12 +56,10 @@ internal class LongestCommonSubsequence<T>
                 }
 
                 // Don't bother with this if it doesn't match at the Nth element
-                // ReSharper disable AssignNullToNotNullAttribute
                 if (!this._Comparer.Equals(this._Collection1[index1 + length], this._Collection2[index2 + length]))
                 {
                     continue;
                 }
-                // ReSharper restore AssignNullToNotNullAttribute
 
                 var matchLength = this.CountSimilarElements(index1, upper1, index2, upper2);
                 if (matchLength > length)
@@ -85,14 +83,12 @@ internal class LongestCommonSubsequence<T>
     {
         var count = 0;
 
-        // ReSharper disable AssignNullToNotNullAttribute
         while (index1 < upper1 && index2 < upper2 && this._Comparer.Equals(this._Collection1[index1], this._Collection2[index2]))
         {
             count++;
             index1++;
             index2++;
         }
-        // ReSharper restore AssignNullToNotNullAttribute
 
         return count;
     }

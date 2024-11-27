@@ -8,14 +8,7 @@ internal class HashcodeOccurance
         this.Next = next;
     }
 
-    public int Position
-    {
-        get;
-    }
+    public int Position { get; }
 
-    public HashcodeOccurance? Next
-    {
-        get;
-        set;
-    }
+    public HashcodeOccurance? Next { get; set; }
 }

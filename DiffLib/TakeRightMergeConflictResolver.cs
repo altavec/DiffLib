@@ -3,9 +3,7 @@
 /// <summary>
 /// This implementation of <see cref="IMergeConflictResolver{T}"/> always takes the right side.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements in the collections being merged.
-/// </typeparam>
+/// <typeparam name="T">The type of elements in the collections being merged.</typeparam>
 public class TakeRightMergeConflictResolver<T> : IMergeConflictResolver<T>
 {
     /// <inheritdoc />

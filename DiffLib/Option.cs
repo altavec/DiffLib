@@ -1,10 +1,9 @@
 ﻿namespace DiffLib;
 
 /// <summary>
-/// This type functions similar to <see cref="Nullable{T}"/> except that it can hold any type of value
-/// and is used for situations where you may or may not have a value.
+/// This type functions similar to <see cref="Nullable{T}"/> except that it can hold any type of value and is used for situations where you may or may not have a value.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">The type of option.</typeparam>
 public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 {
     private readonly T value;
@@ -27,7 +26,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     public readonly T Value => this.HasValue ? this.value : throw new InvalidOperationException("This Option<T> does not have a value");
 
     /// <summary>
-    /// Gets the <see cref="Value"/>  of this <see cref="Option{T}"/>, or the default value for <typeparamref name="T"/> if it has no value.
+    /// Gets the <see cref="Value"/> of this <see cref="Option{T}"/>, or the default value for <typeparamref name="T"/> if it has no value.
     /// </summary>
     public T? GetValueOrDefault() => this.HasValue ? this.Value : default;
 

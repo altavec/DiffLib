@@ -117,7 +117,6 @@ public class AlignmentKeyTests
     {
         var key1 = new AlignmentKey(10, 20);
 
-        // ReSharper disable once SuspiciousTypeConversion.Global
         var output = key1.Equals("string");
 
         Assert.That(output, Is.False);

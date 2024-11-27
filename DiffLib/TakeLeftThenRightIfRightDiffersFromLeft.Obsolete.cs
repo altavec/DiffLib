@@ -19,7 +19,7 @@ public class TakeLeftThenRightIfRightDiffersFromLeft<T> : TakeLeftThenRightIfRig
     /// </summary>
     /// <param name="equalityComparer">
     /// The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If
-    /// <c>null</c> then <see cref="EqualityComparer{T}.Default"/> is used.
+    /// <see langword="null"/> then <see cref="EqualityComparer{T}.Default"/> is used.
     /// </param>
     public TakeLeftThenRightIfRightDiffersFromLeft(IEqualityComparer<T?>? equalityComparer = default)
         : base(equalityComparer)

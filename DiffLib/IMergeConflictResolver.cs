@@ -12,22 +12,12 @@ public interface IMergeConflictResolver<T>
     /// <summary>
     /// Must resolve one conflict, given the common base items, the left items and the right items.
     /// </summary>
-    /// <param name="commonBase">
-    /// The matching elements from the common base. Note that this can be empty in the case of inserts.
-    /// </param>
-    /// <param name="left">
-    /// The left modification or insert, as compared to the <paramref name="commonBase"/>.
-    /// </param>
-    /// <param name="right">
-    /// The right modification or insert, as compared to the <paramref name="commonBase"/>.
-    /// </param>
-    /// <returns>
-    /// The final items that should be used to resolve the conflict. These items will be used instead
-    /// of whatever was found from the left and right side.
+    /// <param name="commonBase">The matching elements from the common base. Note that this can be empty in the case of inserts.</param>
+    /// <param name="left">The left modification or insert, as compared to the <paramref name="commonBase"/>.</param>
+    /// <param name="right">The right modification or insert, as compared to the <paramref name="commonBase"/>.</param>
+    /// <returns>The final items that should be used to resolve the conflict. These items will be used instead of whatever was found from the left and right side.
     /// </returns>
-    /// <exception cref="MergeConflictException">
-    /// The conflict resolver implementation is unable to determine how to resolve the conflict. Throwing this exception will abort the merge.
-    /// </exception>
+    /// <exception cref="MergeConflictException">The conflict resolver implementation is unable to determine how to resolve the conflict. Throwing this exception will abort the merge.</exception>
     /// <remarks>
     /// <para>Note that the conflict resolver mechanism will only be invoked when there is actually a conflict. If this method is called with
     /// a common base, and one of the sides are empty, the other is not, then this actually means that one side deleted the content and the

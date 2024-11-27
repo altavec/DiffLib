@@ -7,41 +7,15 @@ using static System.Math;
 /// It will output a number of replace operations, depending on overlap, and then anything leftover that is present in the first collection
 /// as a sequence of delete operations, and in the second collection as a sequence of insert operations.
 /// </summary>
-/// <typeparam name="T">
-/// The type of elements in the two collections.
-/// </typeparam>
+/// <typeparam name="T">The type of elements in the two collections.</typeparam>
 public class BasicReplaceInsertDeleteDiffElementAligner<T> : BasicInsertDeleteDiffElementAligner<T>
 {
-    /// <summary>
-    /// Align the specified portions of the two collections and output element-by-element operations for the aligned elements.
-    /// </summary>
-    /// <param name="collection1">
-    /// The first collection.
-    /// </param>
-    /// <param name="start1">
-    /// The start of the portion to look at in the first collection, <paramref name="collection1"/>.
-    /// </param>
-    /// <param name="length1">
-    /// The length of the portion to look at in the first collection, <paramref name="collection1"/>.
-    /// </param>
-    /// <param name="collection2">
-    /// The second collection.
-    /// </param>
-    /// <param name="start2">
-    /// The start of the portion to look at in the second collection, <paramref name="collection2"/>.
-    /// </param>
-    /// <param name="length2">
-    /// The length of the portion to look at in the second collection, <paramref name="collection2"/>.
-    /// </param>
-    /// <returns>
-    /// A collection of <see cref="DiffElement{T}"/> values, one for each aligned element.
-    /// </returns>
+    /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// <para><paramref name="collection1"/> is <c>null</c>.</para>
+    /// <para><paramref name="collection1"/> is <see langword="null"/>.</para>
     /// <para>- or -</para>
-    /// <para><paramref name="collection2"/> is <c>null</c>.</para>
+    /// <para><paramref name="collection2"/> is <see langword="null"/>.</para>
     /// </exception>
-
     public override IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
     {
         var replaceCount = Min(length1, length2);

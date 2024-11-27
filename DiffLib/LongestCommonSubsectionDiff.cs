@@ -79,14 +79,12 @@ internal static class LongestCommonSubsectionDiff
     {
         var count = 0;
 
-        // ReSharper disable AssignNullToNotNullAttribute
         while (lower1 < upper1 && lower2 < upper2 && comparer.Equals(collection1[lower1], collection2[lower2]))
         {
             count++;
             lower1++;
             lower2++;
         }
-        // ReSharper restore AssignNullToNotNullAttribute
 
         return count;
     }
@@ -95,14 +93,12 @@ internal static class LongestCommonSubsectionDiff
     {
         var count = 0;
 
-        // ReSharper disable AssignNullToNotNullAttribute
         while (upper1 > lower1 && upper2 > lower2 && comparer.Equals(collection1[upper1 - 1], collection2[upper2 - 1]))
         {
             count++;
             upper1--;
             upper2--;
         }
-        // ReSharper restore AssignNullToNotNullAttribute
 
         return count;
     }
