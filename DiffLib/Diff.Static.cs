@@ -29,10 +29,7 @@ public static class Diff
     /// <para>- or -</para>
     /// <para><paramref name="collection2"/> is <c>null</c>.</para>
     /// </exception>
-    public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, IEqualityComparer<T>? comparer = default)
-    {
-        return CalculateSections(collection1, collection2, new DiffOptions(), comparer);
-    }
+    public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, IEqualityComparer<T>? comparer = default) => CalculateSections(collection1, collection2, new DiffOptions(), comparer);
 
     /// <summary>
     /// Calculate sections of differences from the two collections using the specified comparer.
@@ -63,14 +60,19 @@ public static class Diff
     /// </exception>
     public static IEnumerable<DiffSection> CalculateSections<T>(IList<T> collection1, IList<T> collection2, DiffOptions? options, IEqualityComparer<T>? comparer = default)
     {
-        if (collection1 == null)
+        if (collection1 is null)
+        {
             throw new ArgumentNullException(nameof(collection1));
-        if (collection2 == null)
+        }
+
+        if (collection2 is null)
+        {
             throw new ArgumentNullException(nameof(collection2));
+        }
 
-        comparer = comparer ?? EqualityComparer<T>.Default;
+        comparer ??= EqualityComparer<T>.Default;
 
-        options = options ?? new DiffOptions();
+        options ??= new DiffOptions();
 
         return LongestCommonSubsectionDiff.Calculate(collection1, collection2, options, comparer);
     }
@@ -108,28 +110,26 @@ public static class Diff
     /// </exception>
     public static IEnumerable<DiffElement<T>> AlignElements<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
     {
-        if (collection1 == null)
-            throw new ArgumentNullException(nameof(collection1));
-        if (collection2 == null)
-            throw new ArgumentNullException(nameof(collection2));
-        if (diffSections == null)
-            throw new ArgumentNullException(nameof(diffSections));
-        if (aligner == null)
-            throw new ArgumentNullException(nameof(aligner));
-
-        return AlignElementsImplementation(collection1, collection2, diffSections, aligner);
+        return (collection1, collection2, diffSections, aligner) switch
+        {
+            (null, _, _, _) => throw new ArgumentNullException(nameof(collection1)),
+            (_, null, _, _) => throw new ArgumentNullException(nameof(collection2)),
+            (_, _, null, _) => throw new ArgumentNullException(nameof(diffSections)),
+            (_, _, _, null) => throw new ArgumentNullException(nameof(aligner)),
+            _=> AlignElementsImplementation(collection1, collection2, diffSections, aligner),
+        };
     }
 
     private static IEnumerable<DiffElement<T>> AlignElementsImplementation<T>(IList<T> collection1, IList<T> collection2, IEnumerable<DiffSection> diffSections, IDiffElementAligner<T> aligner)
     {
-        int start1 = 0;
-        int start2 = 0;
+        var start1 = 0;
+        var start2 = 0;
 
         foreach (var section in diffSections)
         {
             if (section.IsMatch)
             {
-                for (int index = 0; index < section.LengthInCollection1; index++)
+                for (var index = 0; index < section.LengthInCollection1; index++)
                 {
                     yield return new DiffElement<T>(start1, collection1[start1], start2, collection2[start2], DiffOperation.Match);
                     start1++;
@@ -139,7 +139,9 @@ public static class Diff
             else
             {
                 foreach (var element in aligner.Align(collection1, start1, section.LengthInCollection1, collection2, start2, section.LengthInCollection2))
+                {
                     yield return element;
+                }
 
                 start1 += section.LengthInCollection1;
                 start2 += section.LengthInCollection2;

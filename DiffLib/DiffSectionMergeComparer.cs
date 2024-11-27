@@ -4,29 +4,16 @@ internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
 {
     private readonly IEqualityComparer<T?> _Comparer;
 
-    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer)
+    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer) => this._Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+
+    public bool Equals(DiffElement<T> x, DiffElement<T> y) => this._Comparer.Equals(this.GetElement(x), this.GetElement(y));
+
+    public int GetHashCode(DiffElement<T> obj) => this._Comparer.GetHashCode(this.GetElement(obj));
+
+    private T? GetElement(DiffElement<T> diffElement) => diffElement switch
     {
-        this._Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-    }
-
-    public bool Equals(DiffElement<T> x, DiffElement<T> y)
-    {
-        return this._Comparer.Equals(this.GetElement(x), this.GetElement(y));
-    }
-
-    public int GetHashCode(DiffElement<T> obj)
-    {
-        return this._Comparer.GetHashCode(this.GetElement(obj));
-    }
-
-    private T? GetElement(DiffElement<T> diffElement)
-    {
-        if (diffElement.ElementFromCollection1.HasValue)
-            return diffElement.ElementFromCollection1.Value;
-
-        if (diffElement.ElementFromCollection2.HasValue)
-            return diffElement.ElementFromCollection2.Value;
-
-        return default(T);
-    }
+        { ElementFromCollection1: { HasValue: true } element } => element.Value,
+        { ElementFromCollection2: { HasValue: true } element } => element.Value,
+        _ => default,
+    };
 }

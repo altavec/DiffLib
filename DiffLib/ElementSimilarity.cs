@@ -14,7 +14,7 @@ namespace DiffLib;
 /// The second element.
 /// </param>
 /// <returns>
-/// A <see cref="double"/> value between 0.0 and 1.0 specifying how similar the two items are. 0.0 means
+/// A <see cref="Double"/> value between 0.0 and 1.0 specifying how similar the two items are. 0.0 means
 /// not similar at all, and 1.0 means the equivalent of equality. Values below zero or above one
 /// will result in undefined behavior.
 /// </returns>

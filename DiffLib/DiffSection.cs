@@ -61,10 +61,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public readonly bool Equals(DiffSection other)
-    {
-        return this.IsMatch == other.IsMatch && this.LengthInCollection1 == other.LengthInCollection1 && this.LengthInCollection2 == other.LengthInCollection2;
-    }
+    public readonly bool Equals(DiffSection other) => this.IsMatch == other.IsMatch && this.LengthInCollection1 == other.LengthInCollection1 && this.LengthInCollection2 == other.LengthInCollection2;
 
     /// <summary>
     /// Indicates whether this instance and a specified object are equal.
@@ -73,12 +70,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
     /// </returns>
     /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj))
-            return false;
-        return obj is DiffSection && this.Equals((DiffSection)obj);
-    }
+    public override bool Equals(object? obj) => obj is not null && obj is DiffSection diffSection && this.Equals(diffSection);
 
     /// <summary>
     /// Returns the hash code for this instance.
@@ -104,10 +96,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// <param name="section1"></param>
     /// <param name="section2"></param>
     /// <returns></returns>
-    public static bool operator ==(DiffSection section1, DiffSection section2)
-    {
-        return section1.Equals(section2);
-    }
+    public static bool operator ==(DiffSection section1, DiffSection section2) => section1.Equals(section2);
 
     /// <summary>
     /// Implements the inequality operator.
@@ -115,10 +104,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// <param name="section1"></param>
     /// <param name="section2"></param>
     /// <returns></returns>
-    public static bool operator !=(DiffSection section1, DiffSection section2)
-    {
-        return !section1.Equals(section2);
-    }
+    public static bool operator !=(DiffSection section1, DiffSection section2) => !section1.Equals(section2);
 
     /// <summary>
     /// Returns the fully qualified type name of this instance.
@@ -127,20 +113,12 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// A <see cref="T:System.String"/> containing a fully qualified type name.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override readonly string ToString()
+    public override readonly string ToString() => this switch
     {
-        if (this.IsMatch)
-            return $"{this.LengthInCollection1} matched";
-
-        if (this.LengthInCollection1 == this.LengthInCollection2)
-            return $"{this.LengthInCollection1} did not match";
-
-        if (this.LengthInCollection1 == 0)
-            return $"{this.LengthInCollection2} was present in collection2, but not in collection1";
-
-        if (this.LengthInCollection2 == 0)
-            return $"{this.LengthInCollection1} was present in collection1, but not in collection2";
-
-        return $"{this.LengthInCollection1} did not match with {this.LengthInCollection2}";
-    }
+        { IsMatch: true } => $"{this.LengthInCollection1} matched",
+        _ when this.LengthInCollection1 == this.LengthInCollection2 => $"{this.LengthInCollection1} did not match",
+        { LengthInCollection1: 0 } => $"{this.LengthInCollection2} was present in collection2, but not in collection1",
+        { LengthInCollection2: 0 } => $"{this.LengthInCollection1} was present in collection1, but not in collection2",
+        _ => $"{this.LengthInCollection1} did not match with {this.LengthInCollection2}",
+    };
 }

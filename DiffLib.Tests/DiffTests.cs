@@ -27,8 +27,8 @@ public class DiffTests
     public void AlignElements_NullCollection1_ThrowsArgumentNullException()
     {
         IList<int>? collection1 = null;
-        IList<int> collection2 = new int[0];
-        IEnumerable<DiffSection> diffSections = new DiffSection[0];
+        IList<int> collection2 = [];
+        IEnumerable<DiffSection> diffSections = [];
         IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
         Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1!, collection2, diffSections, aligner));
     }
@@ -36,9 +36,9 @@ public class DiffTests
     [Test]
     public void AlignElements_NullCollection2_ThrowsArgumentNullException()
     {
-        IList<int> collection1 = new int[0];
+        IList<int> collection1 = [];
         IList<int>? collection2 = null;
-        IEnumerable<DiffSection> diffSections = new DiffSection[0];
+        IEnumerable<DiffSection> diffSections = [];
         IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
         Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2!, diffSections, aligner));
     }
@@ -46,8 +46,8 @@ public class DiffTests
     [Test]
     public void AlignElements_NullDiffSections_ThrowsArgumentNullException()
     {
-        IList<int> collection1 = new int[0];
-        IList<int> collection2 = new int[0];
+        IList<int> collection1 = [];
+        IList<int> collection2 = [];
         IEnumerable<DiffSection>? diffSections = null;
         IDiffElementAligner<int> aligner = new BasicInsertDeleteDiffElementAligner<int>();
         Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections!, aligner));
@@ -56,9 +56,9 @@ public class DiffTests
     [Test]
     public void AlignElements_NullAligner_ThrowsArgumentNullException()
     {
-        IList<int> collection1 = new int[0];
-        IList<int> collection2 = new int[0];
-        IEnumerable<DiffSection> diffSections = new DiffSection[0];
+        IList<int> collection1 = [];
+        IList<int> collection2 = [];
+        IEnumerable<DiffSection> diffSections = [];
         IDiffElementAligner<int>? aligner = null;
         Assert.Throws<ArgumentNullException>(() => Diff.AlignElements(collection1, collection2, diffSections, aligner!));
     }

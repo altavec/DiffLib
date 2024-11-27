@@ -23,8 +23,10 @@ public class MergeConflictException : Exception
     public MergeConflictException(string message, IEnumerable<object?> commonBase, IEnumerable<object?> left, IEnumerable<object?> right)
         : base(message)
     {
-        if (message == null)
+        if (message is null)
+        {
             throw new ArgumentNullException(nameof(message));
+        }
 
         this.CommonBase = commonBase.ToArray() ?? throw new ArgumentNullException(nameof(commonBase));
         this.Left = left.ToArray() ?? throw new ArgumentNullException(nameof(left));

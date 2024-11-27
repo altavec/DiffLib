@@ -74,16 +74,23 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     /// </exception>
     public IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
     {
-        if (collection1 == null)
+        if (collection1 is null)
+        {
             throw new ArgumentNullException(nameof(collection1));
-        if (collection2 == null)
+        }
+
+        if (collection2 is null)
+        {
             throw new ArgumentNullException(nameof(collection2));
+        }
 
         if (length1 > 0 && length2 > 0)
         {
             var elements = this.TryAlignSections(collection1, start1, length1, collection2, start2, length2);
             if (elements.Count > 0)
+            {
                 return elements;
+            }
         }
 
         return this._BasicAligner.Align(collection1, start1, length1, collection2, start2, length2);
@@ -95,13 +102,15 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
         // number in the future to see if I can bring it up, or possible that I don't need it,
         // but since this is a recursive solution the combinations could get big fast.
         if (length1 + length2 > _MaximumChangedSectionSizeBeforePuntingToDeletePlusAdd)
-            return new List<DiffElement<T>>();
+        {
+            return [];
+        }
 
         var nodes = new Dictionary<AlignmentKey, AlignmentNode>();
         var bestNode = this.CalculateBestAlignment(nodes, collection1, start1, start1 + length1, collection2, start2, start2 + length2);
 
         var result = new List<DiffElement<T>>();
-        while (bestNode != null)
+        while (bestNode is not null)
         {
             if (bestNode.NodeCount > 0)
             {
@@ -137,14 +146,15 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     private AlignmentNode CalculateBestAlignment(Dictionary<AlignmentKey, AlignmentNode> nodes, IList<T> collection1, int lower1, int upper1, IList<T> collection2, int lower2, int upper2)
     {
         var key = new AlignmentKey(lower1, lower2);
-        AlignmentNode result;
-        if (nodes.TryGetValue(key, out result))
+        if (nodes.TryGetValue(key, out var result))
         {
             return result;
         }
 
         if (lower1 == upper1 && lower2 == upper2)
+        {
             result = new AlignmentNode(DiffOperation.Match, 0.0, 0, null);
+        }
         else if (lower1 == upper1)
         {
             var restAfterInsert = this.CalculateBestAlignment(nodes, collection1, lower1, upper1, collection2, lower2 + 1, upper2);
@@ -167,17 +177,24 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
 
             // Calculate how the results will be if we replace or modify an element
             var restAfterChange = this.CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2 + 1, upper2);
-            double similarity = this._SimilarityFunc(collection1[lower1], collection2[lower2]);
+            var similarity = this._SimilarityFunc(collection1[lower1], collection2[lower2]);
             AlignmentNode? resultChange = null;
             if (similarity >= this._ModificationThreshold)
+            {
                 resultChange = new AlignmentNode(DiffOperation.Modify, similarity + restAfterInsert.Similarity, restAfterChange.NodeCount + 1, restAfterChange);
+            }
 
             // Then pick the operation that resulted in the best average similarity
             result = resultDelete;
             if (resultInsert.AverageSimilarity > result.AverageSimilarity)
+            {
                 result = resultInsert;
+            }
+
             if (resultChange?.AverageSimilarity > result.AverageSimilarity)
+            {
                 result = resultChange;
+            }
         }
 
         nodes[key] = result;

@@ -8,7 +8,7 @@ internal class LongestCommonSubsequence<T>
 
     private readonly IEqualityComparer<T> _Comparer;
 
-    private readonly Dictionary<int, HashcodeOccurance> _HashCodes2 = new Dictionary<int, HashcodeOccurance>();
+    private readonly Dictionary<int, HashcodeOccurance> _HashCodes2 = [];
 
     private bool _FirstHashCodes2 = true;
     private int _HashCodes2Lower;
@@ -30,33 +30,40 @@ internal class LongestCommonSubsequence<T>
 
         this.EnsureHashCodes2(lower2, upper2);
 
-        for (int index1 = lower1; index1 < upper1; index1++)
+        for (var index1 = lower1; index1 < upper1; index1++)
         {
             // Break early if there is no way we can find a better match
             if (index1 + length >= upper1)
+            {
                 break;
+            }
 
             var hashcode = this._Collection1[index1]?.GetHashCode(this._Comparer) ?? 0;
 
-            HashcodeOccurance? occurance;
-            if (!this._HashCodes2.TryGetValue(hashcode, out occurance))
-                continue;
-
-            while (occurance != null)
+            if (!this._HashCodes2.TryGetValue(hashcode, out var occurance))
             {
-                int index2 = occurance.Position;
+                continue;
+            }
+
+            while (occurance is not null)
+            {
+                var index2 = occurance.Position;
                 occurance = occurance.Next;
 
                 if (index2 < lower2 || index2 + length >= upper2)
+                {
                     continue;
+                }
 
                 // Don't bother with this if it doesn't match at the Nth element
                 // ReSharper disable AssignNullToNotNullAttribute
                 if (!this._Comparer.Equals(this._Collection1[index1 + length], this._Collection2[index2 + length]))
+                {
                     continue;
+                }
                 // ReSharper restore AssignNullToNotNullAttribute
 
-                int matchLength = this.CountSimilarElements(index1, upper1, index2, upper2);
+                var matchLength = this.CountSimilarElements(index1, upper1, index2, upper2);
                 if (matchLength > length)
                 {
                     position1 = index1;
@@ -65,7 +72,9 @@ internal class LongestCommonSubsequence<T>
                 }
 
                 if (index1 + length >= upper1)
+                {
                     break;
+                }
             }
         }
 
@@ -74,7 +83,7 @@ internal class LongestCommonSubsequence<T>
 
     private int CountSimilarElements(int index1, int upper1, int index2, int upper2)
     {
-        int count = 0;
+        var count = 0;
 
         // ReSharper disable AssignNullToNotNullAttribute
         while (index1 < upper1 && index2 < upper2 && this._Comparer.Equals(this._Collection1[index1], this._Collection2[index2]))
@@ -96,8 +105,10 @@ internal class LongestCommonSubsequence<T>
             this._HashCodes2Lower = lower;
             this._HashCodes2Upper = upper;
 
-            for (int index = lower; index < upper; index++)
+            for (var index = lower; index < upper; index++)
+            {
                 this.AddHashCode2(index, this._Collection2[index]?.GetHashCode(this._Comparer) ?? 0);
+            }
 
             return;
         }
@@ -117,8 +128,7 @@ internal class LongestCommonSubsequence<T>
 
     private void AddHashCode2(int position, int hashcode)
     {
-        HashcodeOccurance occurance;
-        if (this._HashCodes2.TryGetValue(hashcode, out occurance))
+        if (this._HashCodes2.TryGetValue(hashcode, out var occurance))
         {
             occurance.Next = new HashcodeOccurance(position, occurance.Next);
         }

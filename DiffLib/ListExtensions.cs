@@ -36,10 +36,7 @@ public static class ListExtensions
     /// make adjustments to it to have the right elements. Useful in conjunction with UI bindings and
     /// similar that react to changes to the list.
     /// </remarks>
-    public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, IEqualityComparer<T?>? comparer = default, IDiffElementAligner<T>? aligner = default)
-    {
-        MutateToBeLike(target, source, new DiffOptions(), comparer, aligner);
-    }
+    public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, IEqualityComparer<T?>? comparer = default, IDiffElementAligner<T>? aligner = default) => MutateToBeLike(target, source, new DiffOptions(), comparer, aligner);
 
     /// <summary>
     /// Mutate the specified list to have the same elements as another list, by inserting or removing as needed. The end result is that
@@ -77,19 +74,24 @@ public static class ListExtensions
     /// </remarks>
     public static void MutateToBeLike<T>(this IList<T> target, IList<T> source, DiffOptions? options, IEqualityComparer<T>? comparer = default, IDiffElementAligner<T>? aligner = default)
     {
-        if (target == null)
+        if (target is null)
+        {
             throw new ArgumentNullException(nameof(target));
-        if (source == null)
-            throw new ArgumentNullException(nameof(source));
+        }
 
-        options = options ?? new DiffOptions();
-        comparer = comparer ?? EqualityComparer<T?>.Default;
-        aligner = aligner ?? new BasicReplaceInsertDeleteDiffElementAligner<T>();
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        options ??= new DiffOptions();
+        comparer ??= EqualityComparer<T?>.Default;
+        aligner ??= new BasicReplaceInsertDeleteDiffElementAligner<T>();
 
         var sections = Diff.CalculateSections(target, source, options, comparer);
         var items = Diff.AlignElements(target, source, sections, aligner).ToList();
 
-        int targetIndex = 0;
+        var targetIndex = 0;
         foreach (var item in items)
         {
             switch (item.Operation)

@@ -18,21 +18,24 @@ public class TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver<T> : I
     /// The <see cref="IEqualityComparer{T}"/> to use when determining if elements of the left side of a conflict matches those on the right side. If
     /// <c>null</c> then <see cref="EqualityComparer{T}.Default"/> is used.
     /// </param>
-    public TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver(IEqualityComparer<T>? equalityComparer = default)
-    {
-        this._EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
-    }
+    public TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver(IEqualityComparer<T>? equalityComparer = default) => this._EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
 
     /// <inheritdoc />
     public IEnumerable<T> Resolve(IList<T> commonBase, IList<T> left, IList<T> right)
     {
         foreach (var item in right)
+        {
             yield return item;
+        }
 
         if (left.SequenceEqual(right, this._EqualityComparer))
+        {
             yield break;
+        }
 
         foreach (var item in left)
+        {
             yield return item;
+        }
     }
 }

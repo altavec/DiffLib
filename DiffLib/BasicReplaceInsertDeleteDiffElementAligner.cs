@@ -1,6 +1,6 @@
-﻿using static System.Math;
+﻿namespace DiffLib;
 
-namespace DiffLib;
+using static System.Math;
 
 /// <summary>
 /// This class can be used as a parameter to <see cref="Diff.AlignElements{T}"/>.
@@ -44,11 +44,15 @@ public class BasicReplaceInsertDeleteDiffElementAligner<T> : BasicInsertDeleteDi
 
     public override IEnumerable<DiffElement<T>> Align(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
     {
-        int replaceCount = Min(length1, length2);
-        for (int index = 0; index < replaceCount; index++)
+        var replaceCount = Min(length1, length2);
+        for (var index = 0; index < replaceCount; index++)
+        {
             yield return new DiffElement<T>(start1 + index, collection1[start1 + index], start2 + index, collection2[start2 + index], DiffOperation.Replace);
+        }
 
         foreach (var element in base.Align(collection1, start1 + replaceCount, length1 - replaceCount, collection2, start2 + replaceCount, length2 - replaceCount))
+        {
             yield return element;
+        }
     }
 }

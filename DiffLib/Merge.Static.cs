@@ -37,10 +37,7 @@ public static class Merge
     /// <exception cref="MergeConflictException">
     /// The <paramref name="conflictResolver"/> threw a <see cref="MergeConflictException"/> to indicate a failure to resolve a conflict.
     /// </exception>
-    public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default)
-    {
-        return Perform(commonBase, left, right, new DiffOptions(), aligner, conflictResolver, comparer);
-    }
+    public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default) => Perform(commonBase, left, right, new DiffOptions(), aligner, conflictResolver, comparer);
 
     /// <summary>
     /// Performs a merge using a 3-way merge, returning the final merged output.
@@ -79,19 +76,33 @@ public static class Merge
     /// </exception>
     public static IEnumerable<T?> Perform<T>(IList<T> commonBase, IList<T> left, IList<T> right, DiffOptions? diffOptions, IDiffElementAligner<T> aligner, IMergeConflictResolver<T?> conflictResolver, IEqualityComparer<T?>? comparer = default)
     {
-        if (commonBase == null)
+        if (commonBase is null)
+        {
             throw new ArgumentNullException(nameof(commonBase));
-        if (left == null)
-            throw new ArgumentNullException(nameof(left));
-        if (right == null)
-            throw new ArgumentNullException(nameof(right));
-        if (aligner == null)
-            throw new ArgumentNullException(nameof(aligner));
-        if (conflictResolver == null)
-            throw new ArgumentNullException(nameof(conflictResolver));
+        }
 
-        diffOptions = diffOptions ?? new DiffOptions();
-        comparer = comparer ?? EqualityComparer<T?>.Default;
+        if (left is null)
+        {
+            throw new ArgumentNullException(nameof(left));
+        }
+
+        if (right is null)
+        {
+            throw new ArgumentNullException(nameof(right));
+        }
+
+        if (aligner is null)
+        {
+            throw new ArgumentNullException(nameof(aligner));
+        }
+
+        if (conflictResolver is null)
+        {
+            throw new ArgumentNullException(nameof(conflictResolver));
+        }
+
+        diffOptions ??= new DiffOptions();
+        comparer ??= EqualityComparer<T?>.Default;
 
         return new Merge<T>(commonBase, left, right, aligner, conflictResolver, comparer, diffOptions);
 

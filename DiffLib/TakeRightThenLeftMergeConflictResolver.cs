@@ -12,9 +12,13 @@ public class TakeRightThenLeftMergeConflictResolver<T> : IMergeConflictResolver<
     public IEnumerable<T> Resolve(IList<T> commonBase, IList<T> left, IList<T> right)
     {
         foreach (var item in right)
+        {
             yield return item;
+        }
 
         foreach (var item in left)
+        {
             yield return item;
+        }
     }
 }

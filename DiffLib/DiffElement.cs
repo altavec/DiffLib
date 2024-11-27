@@ -6,7 +6,7 @@
 /// <typeparam name="T">
 /// The type of elements from the two collections compared.
 /// </typeparam>
-public readonly struct DiffElement<T> : IEquatable<DiffElement<T>> 
+public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
 {
     /// <summary>
     /// Constructs a new instance of <see cref="DiffElement{T}"/>.
@@ -80,15 +80,11 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public readonly bool Equals(DiffElement<T> other)
-    {
-        return
-            this.ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
+    public readonly bool Equals(DiffElement<T> other) => this.ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
             this.ElementFromCollection1.Equals(other.ElementFromCollection1) &&
             this.ElementIndexFromCollection2.Equals(other.ElementIndexFromCollection2) &&
             this.ElementFromCollection2.Equals(other.ElementFromCollection2) &&
             this.Operation == other.Operation;
-    }
 
     /// <summary>
     /// Indicates whether this instance and a specified object are equal.
@@ -97,12 +93,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
     /// </returns>
     /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj))
-            return false;
-        return obj is DiffElement<T> && this.Equals((DiffElement<T>)obj);
-    }
+    public override bool Equals(object? obj) => obj is not null && obj is DiffElement<T> diffElement && this.Equals(diffElement);
 
     /// <summary>
     /// Implements the equality operator.
@@ -110,10 +101,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// <param name="element"></param>
     /// <param name="other"></param>
     /// <returns></returns>
-    public static bool operator ==(DiffElement<T> element, DiffElement<T> other)
-    {
-        return element.Equals(other);
-    }
+    public static bool operator ==(DiffElement<T> element, DiffElement<T> other) => element.Equals(other);
 
     /// <summary>
     /// Implements the inequality operator.
@@ -121,10 +109,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// <param name="element"></param>
     /// <param name="other"></param>
     /// <returns></returns>
-    public static bool operator !=(DiffElement<T> element, DiffElement<T> other)
-    {
-        return !element.Equals(other);
-    }
+    public static bool operator !=(DiffElement<T> element, DiffElement<T> other) => !element.Equals(other);
 
     /// <summary>
     /// Returns the hash code for this instance.
@@ -153,27 +138,13 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// A <see cref="T:System.String"/> containing a fully qualified type name.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override readonly string ToString()
+    public override readonly string ToString() => this.Operation switch
     {
-        switch (this.Operation)
-        {
-            case DiffOperation.Match:
-                return $"same: {this.ElementFromCollection1}";
-
-            case DiffOperation.Insert:
-                return $"insert: {this.ElementFromCollection2}";
-
-            case DiffOperation.Delete:
-                return $"delete: {this.ElementFromCollection1}";
-
-            case DiffOperation.Replace:
-                return $"replace: {this.ElementFromCollection1} with: {this.ElementFromCollection2}";
-
-            case DiffOperation.Modify:
-                return $"modify: {this.ElementFromCollection1} to: {this.ElementFromCollection2}";
-
-            default:
-                return $"? {this.Operation}: {this.ElementFromCollection1}, {this.ElementFromCollection2}";
-        }
-    }
+        DiffOperation.Match => $"same: {this.ElementFromCollection1}",
+        DiffOperation.Insert => $"insert: {this.ElementFromCollection2}",
+        DiffOperation.Delete => $"delete: {this.ElementFromCollection1}",
+        DiffOperation.Replace => $"replace: {this.ElementFromCollection1} with: {this.ElementFromCollection2}",
+        DiffOperation.Modify => $"modify: {this.ElementFromCollection1} to: {this.ElementFromCollection2}",
+        _ => $"? {this.Operation}: {this.ElementFromCollection1}, {this.ElementFromCollection2}",
+    };
 }

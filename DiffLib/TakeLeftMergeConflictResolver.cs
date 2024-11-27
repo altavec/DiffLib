@@ -9,8 +9,5 @@
 public class TakeLeftMergeConflictResolver<T> : IMergeConflictResolver<T>
 {
     /// <inheritdoc />
-    public IEnumerable<T> Resolve(IList<T> commonBase, IList<T> left, IList<T> right)
-    {
-        return left;
-    }
+    public IEnumerable<T> Resolve(IList<T> commonBase, IList<T> left, IList<T> right) => left;
 }

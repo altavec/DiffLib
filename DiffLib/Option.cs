@@ -7,7 +7,7 @@
 /// <typeparam name="T"></typeparam>
 public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 {
-    private readonly T _Value;
+    private readonly T value;
 
     /// <summary>
     /// Constructs a new instance of <see cref="Option{T}"/> with the specified value.
@@ -17,23 +17,14 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// </param>
     public Option(T value)
     {
-        this._Value = value;
+        this.value = value;
         this.HasValue = true;
     }
 
     /// <summary>
     /// Gets the value of this <see cref="Option{T}"/>.
     /// </summary>
-    public readonly T Value
-    {
-        get
-        {
-            if (!this.HasValue)
-                throw new InvalidOperationException("This Option<T> does not have a value");
-
-            return this._Value;
-        }
-    }
+    public readonly T Value => this.HasValue ? this.value : throw new InvalidOperationException("This Option<T> does not have a value");
 
     /// <summary>
     /// Gets the <see cref="Value"/>  of this <see cref="Option{T}"/>, or the default value for <typeparamref name="T"/> if it has no value.
@@ -53,20 +44,14 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static implicit operator Option<T>(T value)
-    {
-        return new Option<T>(value);
-    }
+    public static implicit operator Option<T>(T value) => new(value);
 
     /// <summary>
     /// Implements inequality operator.
     /// </summary>
     /// <param name="option"></param>
     /// <returns></returns>
-    public static explicit operator T(Option<T> option)
-    {
-        return option.Value;
-    }
+    public static explicit operator T(Option<T> option) => option.Value;
 
     /// <summary>
     /// Indicates whether the current object is equal to another object of the same type.
@@ -79,7 +64,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     {
         var equalityComparer = EqualityComparer<T?>.Default;
 
-        return equalityComparer!.Equals(this._Value, other._Value) && this.HasValue == other.HasValue;
+        return equalityComparer!.Equals(this.value, other.value) && this.HasValue == other.HasValue;
     }
 
     /// <summary>
@@ -92,11 +77,13 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     public readonly bool Equals(T other)
     {
         if (!this.HasValue)
+        {
             return false;
+        }
 
         var equalityComparer = EqualityComparer<T?>.Default;
 
-        return equalityComparer.Equals(this._Value, other);
+        return equalityComparer.Equals(this.value, other);
     }
 
     /// <summary>
@@ -106,12 +93,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
     /// </returns>
     /// <param name="obj">Another object to compare to. </param><filterpriority>2</filterpriority>
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj))
-            return false;
-        return obj is Option<T> && this.Equals((Option<T>)obj);
-    }
+    public override bool Equals(object? obj) => obj is not null && obj is Option<T> && this.Equals((Option<T>)obj);
 
     /// <summary>
     /// Implements equality operator.
@@ -119,10 +101,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// <param name="option"></param>
     /// <param name="other"></param>
     /// <returns></returns>
-    public static bool operator ==(Option<T> option, Option<T> other)
-    {
-        return option.Equals(other);
-    }
+    public static bool operator ==(Option<T> option, Option<T> other) => option.Equals(other);
 
     /// <summary>
     /// Implements inequality operator.
@@ -130,10 +109,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// <param name="option"></param>
     /// <param name="other"></param>
     /// <returns></returns>
-    public static bool operator !=(Option<T> option, Option<T> other)
-    {
-        return !option.Equals(other);
-    }
+    public static bool operator !=(Option<T> option, Option<T> other) => !option.Equals(other);
 
     /// <summary>
     /// Returns the hash code for this instance.
@@ -148,7 +124,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
         {
             var equalityComparer = EqualityComparer<T?>.Default;
 
-            return (equalityComparer.GetHashCode(this._Value) * 397) ^ this.HasValue.GetHashCode();
+            return (equalityComparer.GetHashCode(this.value) * 397) ^ this.HasValue.GetHashCode();
         }
     }
 
@@ -161,18 +137,12 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// <filterpriority>2</filterpriority>
     public override readonly string ToString()
     {
-        string result;
-
-        if (this.HasValue)
-            result = this._Value?.ToString() ?? string.Empty;
-        else
-            result = string.Empty;
-
+        var result = this.HasValue ? this.value?.ToString() ?? String.Empty : String.Empty;
         return result;
     }
 
     /// <summary>
     /// Returns an <see cref="Option{T}"/> that has no value.
     /// </summary>
-    public static Option<T> None => new Option<T>();
+    public static Option<T> None => new();
 }

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461;net45</TargetFrameworks>
-    <Description>A Diff implementation for .NET Standard 2.0 and up, written in C#.</Description>
+    <TargetFrameworks>netstandard2.0;netstandard1.0;net461;net45</TargetFrameworks>
+    <Description>A Diff implementation for .NET Standard 1.0 and up, written in C#.</Description>
     <Copyright>Copyright (C) Lasse V. Karlsen 2015-2017, All rights reserved</Copyright>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Lasse V. Karlsen.snk</AssemblyOriginatorKeyFile>
@@ -12,6 +12,8 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <NoWarn>$(NoWarn);NETSDK1215</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Label="Packaging">
@@ -25,7 +27,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-cmhx-cq75-c4mj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\LICENSE.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition=" $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'netstandard2.0')) ">
+      <ItemGroup>
+        <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
   </ItemGroup>
 
 </Project>
