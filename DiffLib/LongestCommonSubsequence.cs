@@ -16,10 +16,10 @@ internal class LongestCommonSubsequence<T>
 
     public LongestCommonSubsequence(IList<T> collection1, IList<T> collection2, IEqualityComparer<T> comparer)
     {
-        _Collection1 = collection1;
-        _Collection2 = collection2;
+        this._Collection1 = collection1;
+        this._Collection2 = collection2;
 
-        _Comparer = comparer;
+        this._Comparer = comparer;
     }
 
     public bool Find(int lower1, int upper1, int lower2, int upper2, out int position1, out int position2, out int length)
@@ -28,7 +28,7 @@ internal class LongestCommonSubsequence<T>
         position2 = 0;
         length = 0;
 
-        EnsureHashCodes2(lower2, upper2);
+        this.EnsureHashCodes2(lower2, upper2);
 
         for (int index1 = lower1; index1 < upper1; index1++)
         {
@@ -36,10 +36,10 @@ internal class LongestCommonSubsequence<T>
             if (index1 + length >= upper1)
                 break;
 
-            var hashcode = _Collection1[index1]?.GetHashCode(_Comparer) ?? 0;
+            var hashcode = this._Collection1[index1]?.GetHashCode(this._Comparer) ?? 0;
 
             HashcodeOccurance? occurance;
-            if (!_HashCodes2.TryGetValue(hashcode, out occurance))
+            if (!this._HashCodes2.TryGetValue(hashcode, out occurance))
                 continue;
 
             while (occurance != null)
@@ -52,11 +52,11 @@ internal class LongestCommonSubsequence<T>
 
                 // Don't bother with this if it doesn't match at the Nth element
                 // ReSharper disable AssignNullToNotNullAttribute
-                if (!_Comparer.Equals(_Collection1[index1 + length], _Collection2[index2 + length]))
+                if (!this._Comparer.Equals(this._Collection1[index1 + length], this._Collection2[index2 + length]))
                     continue;
                 // ReSharper restore AssignNullToNotNullAttribute
 
-                int matchLength = CountSimilarElements(index1, upper1, index2, upper2);
+                int matchLength = this.CountSimilarElements(index1, upper1, index2, upper2);
                 if (matchLength > length)
                 {
                     position1 = index1;
@@ -77,7 +77,7 @@ internal class LongestCommonSubsequence<T>
         int count = 0;
 
         // ReSharper disable AssignNullToNotNullAttribute
-        while (index1 < upper1 && index2 < upper2 && _Comparer.Equals(_Collection1[index1], _Collection2[index2]))
+        while (index1 < upper1 && index2 < upper2 && this._Comparer.Equals(this._Collection1[index1], this._Collection2[index2]))
         {
             count++;
             index1++;
@@ -90,41 +90,41 @@ internal class LongestCommonSubsequence<T>
 
     private void EnsureHashCodes2(int lower, int upper)
     {
-        if (_FirstHashCodes2)
+        if (this._FirstHashCodes2)
         {
-            _FirstHashCodes2 = false;
-            _HashCodes2Lower = lower;
-            _HashCodes2Upper = upper;
+            this._FirstHashCodes2 = false;
+            this._HashCodes2Lower = lower;
+            this._HashCodes2Upper = upper;
 
             for (int index = lower; index < upper; index++)
-                AddHashCode2(index, _Collection2[index]?.GetHashCode(_Comparer) ?? 0);
+                this.AddHashCode2(index, this._Collection2[index]?.GetHashCode(this._Comparer) ?? 0);
 
             return;
         }
 
-        while (_HashCodes2Lower > lower)
+        while (this._HashCodes2Lower > lower)
         {
-            _HashCodes2Lower--;
-            AddHashCode2(_HashCodes2Lower, _Collection2[_HashCodes2Lower]?.GetHashCode(_Comparer) ?? 0);
+            this._HashCodes2Lower--;
+            this.AddHashCode2(this._HashCodes2Lower, this._Collection2[this._HashCodes2Lower]?.GetHashCode(this._Comparer) ?? 0);
         }
 
-        while (_HashCodes2Upper < upper)
+        while (this._HashCodes2Upper < upper)
         {
-            AddHashCode2(_HashCodes2Upper, _Collection2[_HashCodes2Upper]?.GetHashCode(_Comparer) ?? 0);
-            _HashCodes2Upper++;
+            this.AddHashCode2(this._HashCodes2Upper, this._Collection2[this._HashCodes2Upper]?.GetHashCode(this._Comparer) ?? 0);
+            this._HashCodes2Upper++;
         }
     }
 
     private void AddHashCode2(int position, int hashcode)
     {
         HashcodeOccurance occurance;
-        if (_HashCodes2.TryGetValue(hashcode, out occurance))
+        if (this._HashCodes2.TryGetValue(hashcode, out occurance))
         {
             occurance.Next = new HashcodeOccurance(position, occurance.Next);
         }
         else
         {
-            _HashCodes2[hashcode] = new HashcodeOccurance(position, null);
+            this._HashCodes2[hashcode] = new HashcodeOccurance(position, null);
         }
     }
 }

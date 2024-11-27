@@ -39,8 +39,8 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
     /// </exception>
     public ElementSimilarityDiffElementAligner(ElementSimilarity<T> similarityFunc, double modificationThreshold = 0.3333)
     {
-        _SimilarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
-        _ModificationThreshold = modificationThreshold;
+        this._SimilarityFunc = similarityFunc ?? throw new ArgumentNullException(nameof(similarityFunc));
+        this._ModificationThreshold = modificationThreshold;
     }
 
     /// <summary>
@@ -81,12 +81,12 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
 
         if (length1 > 0 && length2 > 0)
         {
-            var elements = TryAlignSections(collection1, start1, length1, collection2, start2, length2);
+            var elements = this.TryAlignSections(collection1, start1, length1, collection2, start2, length2);
             if (elements.Count > 0)
                 return elements;
         }
 
-        return _BasicAligner.Align(collection1, start1, length1, collection2, start2, length2);
+        return this._BasicAligner.Align(collection1, start1, length1, collection2, start2, length2);
     }
 
     private List<DiffElement<T>> TryAlignSections(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
@@ -98,7 +98,7 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
             return new List<DiffElement<T>>();
 
         var nodes = new Dictionary<AlignmentKey, AlignmentNode>();
-        var bestNode = CalculateBestAlignment(nodes, collection1, start1, start1 + length1, collection2, start2, start2 + length2);
+        var bestNode = this.CalculateBestAlignment(nodes, collection1, start1, start1 + length1, collection2, start2, start2 + length2);
 
         var result = new List<DiffElement<T>>();
         while (bestNode != null)
@@ -147,29 +147,29 @@ public class ElementSimilarityDiffElementAligner<T> : IDiffElementAligner<T>
             result = new AlignmentNode(DiffOperation.Match, 0.0, 0, null);
         else if (lower1 == upper1)
         {
-            var restAfterInsert = CalculateBestAlignment(nodes, collection1, lower1, upper1, collection2, lower2 + 1, upper2);
+            var restAfterInsert = this.CalculateBestAlignment(nodes, collection1, lower1, upper1, collection2, lower2 + 1, upper2);
             result = new AlignmentNode(DiffOperation.Insert, restAfterInsert.Similarity, restAfterInsert.NodeCount + 1, restAfterInsert);
         }
         else if (lower2 == upper2)
         {
-            var restAfterDelete = CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2, upper2);
+            var restAfterDelete = this.CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2, upper2);
             result = new AlignmentNode(DiffOperation.Delete, restAfterDelete.Similarity, restAfterDelete.NodeCount + 1, restAfterDelete);
         }
         else
         {
             // Calculate how the results will be if we insert a new element
-            var restAfterInsert = CalculateBestAlignment(nodes, collection1, lower1, upper1, collection2, lower2 + 1, upper2);
+            var restAfterInsert = this.CalculateBestAlignment(nodes, collection1, lower1, upper1, collection2, lower2 + 1, upper2);
             var resultInsert = new AlignmentNode(DiffOperation.Insert, restAfterInsert.Similarity, restAfterInsert.NodeCount + 1, restAfterInsert);
 
             // Calculate how the results will be if we delete an element
-            var restAfterDelete = CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2, upper2);
+            var restAfterDelete = this.CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2, upper2);
             var resultDelete = new AlignmentNode(DiffOperation.Delete, restAfterDelete.Similarity, restAfterDelete.NodeCount + 1, restAfterDelete);
 
             // Calculate how the results will be if we replace or modify an element
-            var restAfterChange = CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2 + 1, upper2);
-            double similarity = _SimilarityFunc(collection1[lower1], collection2[lower2]);
+            var restAfterChange = this.CalculateBestAlignment(nodes, collection1, lower1 + 1, upper1, collection2, lower2 + 1, upper2);
+            double similarity = this._SimilarityFunc(collection1[lower1], collection2[lower2]);
             AlignmentNode? resultChange = null;
-            if (similarity >= _ModificationThreshold)
+            if (similarity >= this._ModificationThreshold)
                 resultChange = new AlignmentNode(DiffOperation.Modify, similarity + restAfterInsert.Similarity, restAfterChange.NodeCount + 1, restAfterChange);
 
             // Then pick the operation that resulted in the best average similarity

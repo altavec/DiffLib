@@ -30,11 +30,11 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// </param>
     public DiffElement(int? elementIndexFromCollection1, Option<T> elementFromCollection1, int? elementIndexFromCollection2, Option<T> elementFromCollection2, DiffOperation operation)
     {
-        ElementIndexFromCollection1 = elementIndexFromCollection1;
-        ElementFromCollection1 = elementFromCollection1;
-        ElementIndexFromCollection2 = elementIndexFromCollection2;
-        ElementFromCollection2 = elementFromCollection2;
-        Operation = operation;
+        this.ElementIndexFromCollection1 = elementIndexFromCollection1;
+        this.ElementFromCollection1 = elementFromCollection1;
+        this.ElementIndexFromCollection2 = elementIndexFromCollection2;
+        this.ElementFromCollection2 = elementFromCollection2;
+        this.Operation = operation;
     }
 
     /// <summary>
@@ -82,12 +82,12 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// <param name="other">An object to compare with this object.</param>
     public readonly bool Equals(DiffElement<T> other)
     {
-        return 
-            ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
-            ElementFromCollection1.Equals(other.ElementFromCollection1) && 
-            ElementIndexFromCollection2.Equals(other.ElementIndexFromCollection2) &&
-            ElementFromCollection2.Equals(other.ElementFromCollection2) &&
-            Operation == other.Operation;
+        return
+            this.ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
+            this.ElementFromCollection1.Equals(other.ElementFromCollection1) &&
+            this.ElementIndexFromCollection2.Equals(other.ElementIndexFromCollection2) &&
+            this.ElementFromCollection2.Equals(other.ElementFromCollection2) &&
+            this.Operation == other.Operation;
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     {
         if (ReferenceEquals(null, obj))
             return false;
-        return obj is DiffElement<T> && Equals((DiffElement<T>)obj);
+        return obj is DiffElement<T> && this.Equals((DiffElement<T>)obj);
     }
 
     /// <summary>
@@ -137,11 +137,11 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     {
         unchecked
         {
-            var hashCode = ElementFromCollection1.GetHashCode();
-            hashCode = (hashCode * 397) ^ ElementFromCollection2.GetHashCode();
-            hashCode = (hashCode * 397) ^ ElementIndexFromCollection1.GetHashCode();
-            hashCode = (hashCode * 397) ^ ElementIndexFromCollection2.GetHashCode();
-            hashCode = (hashCode * 397) ^ (int)Operation;
+            var hashCode = this.ElementFromCollection1.GetHashCode();
+            hashCode = (hashCode * 397) ^ this.ElementFromCollection2.GetHashCode();
+            hashCode = (hashCode * 397) ^ this.ElementIndexFromCollection1.GetHashCode();
+            hashCode = (hashCode * 397) ^ this.ElementIndexFromCollection2.GetHashCode();
+            hashCode = (hashCode * 397) ^ (int)this.Operation;
             return hashCode;
         }
     }
@@ -155,25 +155,25 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// <filterpriority>2</filterpriority>
     public override readonly string ToString()
     {
-        switch (Operation)
+        switch (this.Operation)
         {
             case DiffOperation.Match:
-                return $"same: {ElementFromCollection1}";
+                return $"same: {this.ElementFromCollection1}";
 
             case DiffOperation.Insert:
-                return $"insert: {ElementFromCollection2}";
+                return $"insert: {this.ElementFromCollection2}";
 
             case DiffOperation.Delete:
-                return $"delete: {ElementFromCollection1}";
+                return $"delete: {this.ElementFromCollection1}";
 
             case DiffOperation.Replace:
-                return $"replace: {ElementFromCollection1} with: {ElementFromCollection2}";
+                return $"replace: {this.ElementFromCollection1} with: {this.ElementFromCollection2}";
 
             case DiffOperation.Modify:
-                return $"modify: {ElementFromCollection1} to: {ElementFromCollection2}";
+                return $"modify: {this.ElementFromCollection1} to: {this.ElementFromCollection2}";
 
             default:
-                return $"? {Operation}: {ElementFromCollection1}, {ElementFromCollection2}";
+                return $"? {this.Operation}: {this.ElementFromCollection1}, {this.ElementFromCollection2}";
         }
     }
 }

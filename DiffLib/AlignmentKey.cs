@@ -4,8 +4,8 @@ internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
 {
     public AlignmentKey(int position1, int position2)
     {
-        Position1 = position1;
-        Position2 = position2;
+        this.Position1 = position1;
+        this.Position2 = position2;
     }
 
     public int Position1
@@ -18,9 +18,9 @@ internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
         get;
     }
 
-    public readonly bool Equals(AlignmentKey other) => Position1 == other.Position1 && Position2 == other.Position2;
+    public readonly bool Equals(AlignmentKey other) => this.Position1 == other.Position1 && this.Position2 == other.Position2;
 
-    public override bool Equals(object? obj) => !ReferenceEquals(null, obj) && (obj is AlignmentKey && Equals((AlignmentKey)obj));
+    public override bool Equals(object? obj) => !ReferenceEquals(null, obj) && (obj is AlignmentKey && this.Equals((AlignmentKey)obj));
 
-    public override readonly int GetHashCode() => unchecked((Position1 * 397) ^ Position2);
+    public override readonly int GetHashCode() => unchecked((this.Position1 * 397) ^ this.Position2);
 }

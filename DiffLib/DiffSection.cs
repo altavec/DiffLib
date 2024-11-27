@@ -20,9 +20,9 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// </param>
     public DiffSection(bool isMatch, int lengthInCollection1, int lengthInCollection2)
     {
-        IsMatch = isMatch;
-        LengthInCollection1 = lengthInCollection1;
-        LengthInCollection2 = lengthInCollection2;
+        this.IsMatch = isMatch;
+        this.LengthInCollection1 = lengthInCollection1;
+        this.LengthInCollection2 = lengthInCollection2;
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// <param name="other">An object to compare with this object.</param>
     public readonly bool Equals(DiffSection other)
     {
-        return IsMatch == other.IsMatch && LengthInCollection1 == other.LengthInCollection1 && LengthInCollection2 == other.LengthInCollection2;
+        return this.IsMatch == other.IsMatch && this.LengthInCollection1 == other.LengthInCollection1 && this.LengthInCollection2 == other.LengthInCollection2;
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     {
         if (ReferenceEquals(null, obj))
             return false;
-        return obj is DiffSection && Equals((DiffSection)obj);
+        return obj is DiffSection && this.Equals((DiffSection)obj);
     }
 
     /// <summary>
@@ -91,9 +91,9 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     {
         unchecked
         {
-            var hashCode = IsMatch.GetHashCode();
-            hashCode = (hashCode * 397) ^ LengthInCollection1;
-            hashCode = (hashCode * 397) ^ LengthInCollection2;
+            var hashCode = this.IsMatch.GetHashCode();
+            hashCode = (hashCode * 397) ^ this.LengthInCollection1;
+            hashCode = (hashCode * 397) ^ this.LengthInCollection2;
             return hashCode;
         }
     }
@@ -129,18 +129,18 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     /// <filterpriority>2</filterpriority>
     public override readonly string ToString()
     {
-        if (IsMatch)
-            return $"{LengthInCollection1} matched";
+        if (this.IsMatch)
+            return $"{this.LengthInCollection1} matched";
 
-        if (LengthInCollection1 == LengthInCollection2)
-            return $"{LengthInCollection1} did not match";
+        if (this.LengthInCollection1 == this.LengthInCollection2)
+            return $"{this.LengthInCollection1} did not match";
 
-        if (LengthInCollection1 == 0)
-            return $"{LengthInCollection2} was present in collection2, but not in collection1";
+        if (this.LengthInCollection1 == 0)
+            return $"{this.LengthInCollection2} was present in collection2, but not in collection1";
 
-        if (LengthInCollection2 == 0)
-            return $"{LengthInCollection1} was present in collection1, but not in collection2";
+        if (this.LengthInCollection2 == 0)
+            return $"{this.LengthInCollection1} was present in collection1, but not in collection2";
 
-        return $"{LengthInCollection1} did not match with {LengthInCollection2}";
+        return $"{this.LengthInCollection1} did not match with {this.LengthInCollection2}";
     }
 }

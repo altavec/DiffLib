@@ -4,10 +4,10 @@ internal class AlignmentNode
 {
     public AlignmentNode(DiffOperation operation, double similarity, int nodeCount, AlignmentNode? next)
     {
-        Operation = operation;
-        Similarity = similarity;
-        NodeCount = nodeCount;
-        Next = next;
+        this.Operation = operation;
+        this.Similarity = similarity;
+        this.NodeCount = nodeCount;
+        this.Next = next;
     }
 
     public DiffOperation Operation
@@ -20,7 +20,7 @@ internal class AlignmentNode
         get;
     }
 
-    public double AverageSimilarity => NodeCount == 0 ? 0.0 : Similarity / NodeCount;
+    public double AverageSimilarity => this.NodeCount == 0 ? 0.0 : this.Similarity / this.NodeCount;
 
     public int NodeCount
     {

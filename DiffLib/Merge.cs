@@ -26,33 +26,33 @@ internal class Merge<T> : IEnumerable<T?>
         if (diffOptions == null)
             throw new ArgumentNullException(nameof(diffOptions));
 
-        _ConflictResolver = conflictResolver ?? throw new ArgumentNullException(nameof(conflictResolver));
+        this._ConflictResolver = conflictResolver ?? throw new ArgumentNullException(nameof(conflictResolver));
 
         var diffCommonBaseToLeft = Diff.AlignElements(commonBase, left, Diff.CalculateSections(commonBase, left, diffOptions, comparer), aligner).ToList();
-        _DiffCommonBaseToLeft = diffCommonBaseToLeft;
+        this._DiffCommonBaseToLeft = diffCommonBaseToLeft;
 
         var diffCommonBaseToRight = Diff.AlignElements(commonBase, right, Diff.CalculateSections(commonBase, right, diffOptions, comparer), aligner).ToList();
-        _DiffCommonBaseToRight = diffCommonBaseToRight;
+        this._DiffCommonBaseToRight = diffCommonBaseToRight;
 
         var mergeSections = Diff.CalculateSections(diffCommonBaseToLeft!, diffCommonBaseToRight!, diffOptions, new DiffSectionMergeComparer<T>(comparer)).ToList();
-        _MergeSections = mergeSections;
+        this._MergeSections = mergeSections;
     }
 
     public IEnumerator<T?> GetEnumerator()
     {
         int leftIndex = 0;
         int rightIndex = 0;
-        foreach (var section in _MergeSections)
+        foreach (var section in this._MergeSections)
         {
             if (section.IsMatch)
             {
                 for (int index = 0; index < section.LengthInCollection1; index++)
-                    foreach (var item in ResolveMatchingElementFromBothSides(leftIndex++, rightIndex++))
+                    foreach (var item in this.ResolveMatchingElementFromBothSides(leftIndex++, rightIndex++))
                         yield return item;
             }
             else
             {
-                foreach (var item in ProcessNonMatchingElementsFromBothSides(section, rightIndex, leftIndex))
+                foreach (var item in this.ProcessNonMatchingElementsFromBothSides(section, rightIndex, leftIndex))
                     yield return item;
 
                 leftIndex += section.LengthInCollection1;
@@ -67,44 +67,44 @@ internal class Merge<T> : IEnumerable<T?>
         {
             // right side inserted, right side wins
             for (int index = 0; index < section.LengthInCollection2; index++)
-                yield return _DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value;
+                yield return this._DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value;
         }
         else if (section.LengthInCollection2 == 0)
         {
             // left side inserted, left side wins
             for (int index = 0; index < section.LengthInCollection1; index++)
-                yield return _DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value;
+                yield return this._DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value;
         }
         else
         {
             var leftSide = new List<T?>();
             for (int index = 0; index < section.LengthInCollection1; index++)
-                leftSide.Add(_DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value);
+                leftSide.Add(this._DiffCommonBaseToLeft[leftIndex + index].ElementFromCollection2.Value);
 
             var rightSide = new List<T?>();
             for (int index = 0; index < section.LengthInCollection2; index++)
-                rightSide.Add(_DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value);
+                rightSide.Add(this._DiffCommonBaseToRight[rightIndex + index].ElementFromCollection2.Value);
 
-            foreach (var item in _ConflictResolver.Resolve(new List<T?>(), leftSide, rightSide))
+            foreach (var item in this._ConflictResolver.Resolve(new List<T?>(), leftSide, rightSide))
                 yield return item;
         }
     }
 
     private IEnumerable<T?> ResolveMatchingElementFromBothSides(int leftIndex, int rightIndex)
     {
-        var commonBase = _DiffCommonBaseToLeft[leftIndex].ElementFromCollection1.Value;
+        var commonBase = this._DiffCommonBaseToLeft[leftIndex].ElementFromCollection1.Value;
 
-        var leftOp = _DiffCommonBaseToLeft[leftIndex].Operation;
+        var leftOp = this._DiffCommonBaseToLeft[leftIndex].Operation;
         if (leftOp == DiffOperation.Replace)
             leftOp = DiffOperation.Modify;
-        var leftSide = _DiffCommonBaseToLeft[leftIndex].ElementFromCollection2.GetValueOrDefault()!;
+        var leftSide = this._DiffCommonBaseToLeft[leftIndex].ElementFromCollection2.GetValueOrDefault()!;
 
-        var rightOp = _DiffCommonBaseToRight[rightIndex].Operation;
+        var rightOp = this._DiffCommonBaseToRight[rightIndex].Operation;
         if (rightOp == DiffOperation.Replace)
             rightOp = DiffOperation.Modify;
-        var rightSide = _DiffCommonBaseToRight[rightIndex].ElementFromCollection2.GetValueOrDefault()!;
+        var rightSide = this._DiffCommonBaseToRight[rightIndex].ElementFromCollection2.GetValueOrDefault()!;
 
-        IEnumerable<T?> resolution = GetResolution(commonBase, leftOp, leftSide, rightOp, rightSide);
+        IEnumerable<T?> resolution = this.GetResolution(commonBase, leftOp, leftSide, rightOp, rightSide);
         return resolution;
     }
 
@@ -144,7 +144,7 @@ internal class Merge<T> : IEnumerable<T?>
                         return new T[0];
                     case DiffOperation.Replace:
                     case DiffOperation.Modify:
-                        return _ConflictResolver.Resolve(new[] { commonBase }, new T[0], new[] { rightSide });
+                        return this._ConflictResolver.Resolve(new[] { commonBase }, new T[0], new[] { rightSide });
                     default:
                         throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
                 }
@@ -160,10 +160,10 @@ internal class Merge<T> : IEnumerable<T?>
                     case DiffOperation.Insert:
                         break;
                     case DiffOperation.Delete:
-                        return _ConflictResolver.Resolve(new[] { commonBase }, new[] { leftSide }, new T[0]);
+                        return this._ConflictResolver.Resolve(new[] { commonBase }, new[] { leftSide }, new T[0]);
                     case DiffOperation.Replace:
                     case DiffOperation.Modify:
-                        return _ConflictResolver.Resolve(new[] { commonBase }, new[] { leftSide }, new[] { rightSide });
+                        return this._ConflictResolver.Resolve(new[] { commonBase }, new[] { leftSide }, new[] { rightSide });
                     default:
                         throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, null);
                 }
@@ -176,6 +176,6 @@ internal class Merge<T> : IEnumerable<T?>
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
 }

@@ -4,8 +4,8 @@ internal class HashcodeOccurance
 {
     public HashcodeOccurance(int position, HashcodeOccurance? next)
     {
-        Position = position;
-        Next = next;
+        this.Position = position;
+        this.Next = next;
     }
 
     public int Position

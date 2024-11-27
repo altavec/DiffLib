@@ -14,7 +14,7 @@ public class AlignmentTestCases
 
     private string GetElementOperationsAsAString(IEnumerable<DiffElement<Char>> elements)
     {
-        return new string(elements.Select(element => _OperationCharacters[element.Operation]).ToArray());
+        return new string(elements.Select(element => this._OperationCharacters[element.Operation]).ToArray());
     }
 
     [Test]
@@ -39,7 +39,7 @@ public class AlignmentTestCases
     {
         var sections = Diff.CalculateSections(s1.ToCharArray(), s2.ToCharArray());
         var elements = Diff.AlignElements(s1.ToCharArray(), s2.ToCharArray(), sections, new BasicInsertDeleteDiffElementAligner<char>());
-        var output = GetElementOperationsAsAString(elements);
+        var output = this.GetElementOperationsAsAString(elements);
 
         Assert.That(output, Is.EqualTo(expected));
     }
@@ -68,7 +68,7 @@ public class AlignmentTestCases
     {
         var sections = Diff.CalculateSections(s1.ToCharArray(), s2.ToCharArray());
         var elements = Diff.AlignElements(s1.ToCharArray(), s2.ToCharArray(), sections, new BasicReplaceInsertDeleteDiffElementAligner<char>());
-        var output = GetElementOperationsAsAString(elements);
+        var output = this.GetElementOperationsAsAString(elements);
 
         Assert.That(output, Is.EqualTo(expected));
     }
@@ -109,7 +109,7 @@ public class AlignmentTestCases
 
         var sections = Diff.CalculateSections(s1.ToCharArray(), s2.ToCharArray());
         var elements = Diff.AlignElements(s1.ToCharArray(), s2.ToCharArray(), sections, new ElementSimilarityDiffElementAligner<char>(aligner));
-        var output = GetElementOperationsAsAString(elements);
+        var output = this.GetElementOperationsAsAString(elements);
 
         Assert.That(output, Is.EqualTo(expected));
     }

@@ -6,17 +6,17 @@ internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
 
     public DiffSectionMergeComparer(IEqualityComparer<T?> comparer)
     {
-        _Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+        this._Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
     }
 
     public bool Equals(DiffElement<T> x, DiffElement<T> y)
     {
-        return _Comparer.Equals(GetElement(x), GetElement(y));
+        return this._Comparer.Equals(this.GetElement(x), this.GetElement(y));
     }
 
     public int GetHashCode(DiffElement<T> obj)
     {
-        return _Comparer.GetHashCode(GetElement(obj));
+        return this._Comparer.GetHashCode(this.GetElement(obj));
     }
 
     private T? GetElement(DiffElement<T> diffElement)

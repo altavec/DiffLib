@@ -23,7 +23,7 @@ public class StringSimilarityDiffElementAligner : IDiffElementAligner<string?>
     /// </param>
     public StringSimilarityDiffElementAligner(double modificationThreshold = 0.3333)
     {
-        _Aligner = new ElementSimilarityDiffElementAligner<string?>(StringSimilarity, modificationThreshold);
+        this._Aligner = new ElementSimilarityDiffElementAligner<string?>(StringSimilarity, modificationThreshold);
     }
 
     private static double StringSimilarity(string? element1, string? element2)
@@ -78,6 +78,6 @@ public class StringSimilarityDiffElementAligner : IDiffElementAligner<string?>
     /// </exception>
     public IEnumerable<DiffElement<string?>> Align(IList<string?> collection1, int start1, int length1, IList<string?> collection2, int start2, int length2)
     {
-        return _Aligner.Align(collection1, start1, length1, collection2, start2, length2);
+        return this._Aligner.Align(collection1, start1, length1, collection2, start2, length2);
     }
 }

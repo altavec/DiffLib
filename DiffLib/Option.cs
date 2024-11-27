@@ -17,8 +17,8 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// </param>
     public Option(T value)
     {
-        _Value = value;
-        HasValue = true;
+        this._Value = value;
+        this.HasValue = true;
     }
 
     /// <summary>
@@ -28,17 +28,17 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     {
         get
         {
-            if (!HasValue)
+            if (!this.HasValue)
                 throw new InvalidOperationException("This Option<T> does not have a value");
 
-            return _Value;
+            return this._Value;
         }
     }
 
     /// <summary>
     /// Gets the <see cref="Value"/>  of this <see cref="Option{T}"/>, or the default value for <typeparamref name="T"/> if it has no value.
     /// </summary>
-    public T? GetValueOrDefault() => HasValue ? Value : default;
+    public T? GetValueOrDefault() => this.HasValue ? this.Value : default;
 
     /// <summary>
     /// Gets whether this <see cref="Option{T}"/> has a value.
@@ -79,7 +79,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     {
         var equalityComparer = EqualityComparer<T?>.Default;
 
-        return equalityComparer!.Equals(_Value, other._Value) && HasValue == other.HasValue;
+        return equalityComparer!.Equals(this._Value, other._Value) && this.HasValue == other.HasValue;
     }
 
     /// <summary>
@@ -91,12 +91,12 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// <param name="other">An object to compare with this object.</param>
     public readonly bool Equals(T other)
     {
-        if (!HasValue)
+        if (!this.HasValue)
             return false;
 
         var equalityComparer = EqualityComparer<T?>.Default;
 
-        return equalityComparer.Equals(_Value, other);
+        return equalityComparer.Equals(this._Value, other);
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     {
         if (ReferenceEquals(null, obj))
             return false;
-        return obj is Option<T> && Equals((Option<T>)obj);
+        return obj is Option<T> && this.Equals((Option<T>)obj);
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
         {
             var equalityComparer = EqualityComparer<T?>.Default;
 
-            return (equalityComparer.GetHashCode(_Value) * 397) ^ HasValue.GetHashCode();
+            return (equalityComparer.GetHashCode(this._Value) * 397) ^ this.HasValue.GetHashCode();
         }
     }
 
@@ -163,8 +163,8 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     {
         string result;
 
-        if (HasValue)
-            result = _Value?.ToString() ?? string.Empty;
+        if (this.HasValue)
+            result = this._Value?.ToString() ?? string.Empty;
         else
             result = string.Empty;
 

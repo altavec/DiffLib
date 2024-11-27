@@ -26,9 +26,9 @@ public class MergeConflictException : Exception
         if (message == null)
             throw new ArgumentNullException(nameof(message));
 
-        CommonBase = commonBase.ToArray() ?? throw new ArgumentNullException(nameof(commonBase));
-        Left = left.ToArray() ?? throw new ArgumentNullException(nameof(left));
-        Right = right.ToArray() ?? throw new ArgumentNullException(nameof(right));
+        this.CommonBase = commonBase.ToArray() ?? throw new ArgumentNullException(nameof(commonBase));
+        this.Left = left.ToArray() ?? throw new ArgumentNullException(nameof(left));
+        this.Right = right.ToArray() ?? throw new ArgumentNullException(nameof(right));
     }
 
     /// <summary>

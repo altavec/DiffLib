@@ -20,7 +20,7 @@ public class TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver<T> : I
     /// </param>
     public TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver(IEqualityComparer<T>? equalityComparer = default)
     {
-        _EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
+        this._EqualityComparer = equalityComparer ?? EqualityComparer<T>.Default;
     }
 
     /// <inheritdoc />
@@ -29,7 +29,7 @@ public class TakeRightThenLeftIfLeftDiffersFromRightMergeConflictResolver<T> : I
         foreach (var item in right)
             yield return item;
 
-        if (left.SequenceEqual(right, _EqualityComparer))
+        if (left.SequenceEqual(right, this._EqualityComparer))
             yield break;
 
         foreach (var item in left)
