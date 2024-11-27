@@ -15,5 +15,10 @@ internal readonly struct AlignmentKey(int position1, int position2) : IEquatable
 
     public override bool Equals(object? obj) => obj is AlignmentKey alignmentKey && this.Equals(alignmentKey);
 
-    public override readonly int GetHashCode() => unchecked((this.Position1 * 397) ^ this.Position2);
+    public override readonly int GetHashCode() =>
+#if NETSTANDARD2_0_OR_GREATER || NET461_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+        HashCode.Combine(this.Position1, this.Position2);
+#else
+        unchecked((this.Position1 * 397) ^ this.Position2);
+#endif
 }

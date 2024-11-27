@@ -77,7 +77,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 
     /// <inheritdoc/>
     public override readonly int GetHashCode()
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NET461 || NETCOREAPP2_1_OR_GREATER
         => HashCode.Combine(this.value, this.HasValue);
 #else
     {

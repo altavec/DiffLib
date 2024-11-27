@@ -82,7 +82,7 @@ public readonly struct DiffElement<T>(int? elementIndexFromCollection1, Option<T
     /// <inheritdoc />
     public override readonly int GetHashCode()
     {
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER || NET461 || NETCOREAPP2_1_OR_GREATER
         var hashCode = default(HashCode);
         hashCode.Add(this.ElementFromCollection1);
         hashCode.Add(this.ElementFromCollection2);
