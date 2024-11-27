@@ -53,7 +53,7 @@ public readonly struct DiffSection(bool isMatch, int lengthInCollection1, int le
 
     /// <inheritdoc/>
     public override readonly int GetHashCode()
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
         => HashCode.Combine(this.IsMatch, this.LengthInCollection1, this.LengthInCollection2);
 #else
     {

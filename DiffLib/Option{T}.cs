@@ -14,11 +14,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 {
     private readonly T value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Option{T}"/> struct.
-    /// </summary>
-    /// <param name="value">The value of this <see cref="Option{T}"/>.</param>
-    public Option(T value)
+    private Option(T value)
     {
         this.value = value;
         this.HasValue = true;
@@ -74,19 +70,23 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     public readonly bool Equals(Option<T> other) => EqualityComparer<T?>.Default.Equals(this.value, other.value) && this.HasValue == other.HasValue;
 
     /// <inheritdoc/>
-    public readonly bool Equals(T other) => this.HasValue && EqualityComparer<T?>.Default.Equals(this.value, other);
+    public readonly bool Equals(T? other) => this.HasValue && EqualityComparer<T?>.Default.Equals(this.value, other);
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Option<T> option && this.Equals(option);
 
     /// <inheritdoc/>
     public override readonly int GetHashCode()
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+        => HashCode.Combine(this.value, this.HasValue);
+#else
     {
         unchecked
         {
             return (EqualityComparer<T?>.Default.GetHashCode(this.value) * 397) ^ this.HasValue.GetHashCode();
         }
     }
+#endif
 
     /// <inheritdoc/>
     public override readonly string ToString() => this.HasValue ? this.value?.ToString() ?? string.Empty : string.Empty;
