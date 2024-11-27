@@ -12,6 +12,36 @@ public class MergeConflictException : Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="MergeConflictException"/> class.
     /// </summary>
+    public MergeConflictException()
+        : this(string.Empty)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MergeConflictException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public MergeConflictException(string message)
+        : this(message, [], [], [])
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MergeConflictException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">The inner exception.</param>
+    public MergeConflictException(string message, Exception innerException)
+        : base(message, innerException)
+    {
+        this.CommonBase = [];
+        this.Left = [];
+        this.Right = [];
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MergeConflictException"/> class.
+    /// </summary>
     /// <param name="message">The message indicating what the reason for the failure was.</param>
     /// <param name="commonBase">The common base of the elements involved in the conflict.</param>
     /// <param name="left">The left side of the conflict.</param>
