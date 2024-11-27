@@ -66,7 +66,7 @@ public readonly struct DiffSection : IEquatable<DiffSection>
     public readonly bool Equals(DiffSection other) => this.IsMatch == other.IsMatch && this.LengthInCollection1 == other.LengthInCollection1 && this.LengthInCollection2 == other.LengthInCollection2;
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is not null && obj is DiffSection diffSection && this.Equals(diffSection);
+    public override bool Equals(object? obj) => obj is DiffSection diffSection && this.Equals(diffSection);
 
     /// <inheritdoc/>
     public override readonly int GetHashCode()

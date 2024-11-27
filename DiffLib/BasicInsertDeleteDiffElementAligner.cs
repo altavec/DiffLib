@@ -31,14 +31,19 @@ public class BasicInsertDeleteDiffElementAligner<T> : IDiffElementAligner<T>
             throw new ArgumentNullException(nameof(collection2));
         }
 
-        for (var index = 0; index < length1; index++)
-        {
-            yield return new DiffElement<T>(start1 + index, collection1[start1 + index], null, Option<T>.None, DiffOperation.Delete);
-        }
+        return AlignCore(collection1, start1, length1, collection2, start2, length2);
 
-        for (var index = 0; index < length2; index++)
+        static IEnumerable<DiffElement<T>> AlignCore(IList<T> collection1, int start1, int length1, IList<T> collection2, int start2, int length2)
         {
-            yield return new DiffElement<T>(null, Option<T>.None, start2 + index, collection2[start2 + index], DiffOperation.Insert);
+            for (var index = 0; index < length1; index++)
+            {
+                yield return new DiffElement<T>(start1 + index, collection1[start1 + index], null, Option<T>.None, DiffOperation.Delete);
+            }
+
+            for (var index = 0; index < length2; index++)
+            {
+                yield return new DiffElement<T>(null, Option<T>.None, start2 + index, collection2[start2 + index], DiffOperation.Insert);
+            }
         }
     }
 }

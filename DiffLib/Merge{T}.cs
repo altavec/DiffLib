@@ -159,18 +159,18 @@ internal class Merge<T> : IEnumerable<T?>
             (DiffOperation.Match, DiffOperation.Insert) => ThrowMergeConflictException(),
             (DiffOperation.Match, DiffOperation.Delete) => [],
             (DiffOperation.Match, DiffOperation.Replace or DiffOperation.Modify) => [rightSide],
-            (DiffOperation.Match, _) => ThrowArgumentOutOfRangeException(),
+            (DiffOperation.Match, _) => ThrowArgumentOutOfRangeException(rightOp),
             (DiffOperation.Insert, _) => ThrowMergeConflictException(),
             (DiffOperation.Delete, DiffOperation.Match) => [],
             (DiffOperation.Delete, DiffOperation.Insert) => ThrowMergeConflictException(),
             (DiffOperation.Delete, DiffOperation.Delete) => [],
             (DiffOperation.Delete, DiffOperation.Replace or DiffOperation.Modify) => this.conflictResolver.Resolve([commonBase], [], [rightSide]),
-            (DiffOperation.Delete, _) => ThrowArgumentOutOfRangeException(),
+            (DiffOperation.Delete, _) => ThrowArgumentOutOfRangeException(rightOp),
             (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Match) => [leftSide],
             (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Insert) => ThrowMergeConflictException(),
             (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Delete) => this.conflictResolver.Resolve([commonBase], [leftSide], []),
             (DiffOperation.Replace or DiffOperation.Modify, DiffOperation.Replace or DiffOperation.Modify) => this.conflictResolver.Resolve([commonBase], [leftSide], [rightSide]),
-            (DiffOperation.Replace or DiffOperation.Modify, _) => ThrowArgumentOutOfRangeException(),
+            (DiffOperation.Replace or DiffOperation.Modify, _) => ThrowArgumentOutOfRangeException(rightOp),
             _ => ThrowMergeConflictException(),
         };
 
@@ -179,7 +179,7 @@ internal class Merge<T> : IEnumerable<T?>
             throw new MergeConflictException($"Unable to process {leftOp} vs. {rightOp}", [commonBase], [leftSide], [rightSide]);
         }
 
-        IEnumerable<T?> ThrowArgumentOutOfRangeException()
+        static IEnumerable<T?> ThrowArgumentOutOfRangeException(DiffOperation rightOp)
         {
             throw new ArgumentOutOfRangeException(nameof(rightOp), rightOp, message: null);
         }

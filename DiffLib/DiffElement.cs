@@ -90,7 +90,7 @@ public readonly struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
     /// </returns>
     /// <param name="obj">Another object to compare to. </param><filterpriority>2.</filterpriority>
-    public override bool Equals(object? obj) => obj is not null && obj is DiffElement<T> diffElement && this.Equals(diffElement);
+    public override bool Equals(object? obj) => obj is DiffElement<T> diffElement && this.Equals(diffElement);
 
     /// <inheritdoc />
     public override readonly int GetHashCode()

@@ -10,11 +10,11 @@ internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
 
     public DiffSectionMergeComparer(IEqualityComparer<T?> comparer) => this.comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 
-    public bool Equals(DiffElement<T> x, DiffElement<T> y) => this.comparer.Equals(this.GetElement(x), this.GetElement(y));
+    public bool Equals(DiffElement<T> x, DiffElement<T> y) => this.comparer.Equals(GetElement(x), GetElement(y));
 
-    public int GetHashCode(DiffElement<T> obj) => this.comparer.GetHashCode(this.GetElement(obj));
+    public int GetHashCode(DiffElement<T> obj) => this.comparer.GetHashCode(GetElement(obj));
 
-    private T? GetElement(DiffElement<T> diffElement) => diffElement switch
+    private static T? GetElement(DiffElement<T> diffElement) => diffElement switch
     {
         { ElementFromCollection1: { HasValue: true } element } => element.Value,
         { ElementFromCollection2: { HasValue: true } element } => element.Value,

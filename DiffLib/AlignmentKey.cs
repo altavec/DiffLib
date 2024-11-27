@@ -19,7 +19,7 @@ internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
 
     public readonly bool Equals(AlignmentKey other) => this.Position1 == other.Position1 && this.Position2 == other.Position2;
 
-    public override bool Equals(object? obj) => obj is not null && obj is AlignmentKey alignmentKey && this.Equals(alignmentKey);
+    public override bool Equals(object? obj) => obj is AlignmentKey alignmentKey && this.Equals(alignmentKey);
 
     public override readonly int GetHashCode() => unchecked((this.Position1 * 397) ^ this.Position2);
 }

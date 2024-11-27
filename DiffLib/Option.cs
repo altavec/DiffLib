@@ -81,7 +81,7 @@ public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     public readonly bool Equals(T other) => this.HasValue && EqualityComparer<T?>.Default.Equals(this.value, other);
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is not null && obj is Option<T> option && this.Equals(option);
+    public override bool Equals(object? obj) => obj is Option<T> option && this.Equals(option);
 
     /// <inheritdoc/>
     public override readonly int GetHashCode()
