@@ -1,33 +1,32 @@
-﻿namespace DiffLib
+﻿namespace DiffLib;
+
+internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
 {
-    internal class DiffSectionMergeComparer<T> : IEqualityComparer<DiffElement<T>>
+    private readonly IEqualityComparer<T?> _Comparer;
+
+    public DiffSectionMergeComparer(IEqualityComparer<T?> comparer)
     {
-        private readonly IEqualityComparer<T?> _Comparer;
+        _Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    }
 
-        public DiffSectionMergeComparer(IEqualityComparer<T?> comparer)
-        {
-            _Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
-        }
+    public bool Equals(DiffElement<T> x, DiffElement<T> y)
+    {
+        return _Comparer.Equals(GetElement(x), GetElement(y));
+    }
 
-        public bool Equals(DiffElement<T> x, DiffElement<T> y)
-        {
-            return _Comparer.Equals(GetElement(x), GetElement(y));
-        }
+    public int GetHashCode(DiffElement<T> obj)
+    {
+        return _Comparer.GetHashCode(GetElement(obj));
+    }
 
-        public int GetHashCode(DiffElement<T> obj)
-        {
-            return _Comparer.GetHashCode(GetElement(obj));
-        }
+    private T? GetElement(DiffElement<T> diffElement)
+    {
+        if (diffElement.ElementFromCollection1.HasValue)
+            return diffElement.ElementFromCollection1.Value;
 
-        private T? GetElement(DiffElement<T> diffElement)
-        {
-            if (diffElement.ElementFromCollection1.HasValue)
-                return diffElement.ElementFromCollection1.Value;
+        if (diffElement.ElementFromCollection2.HasValue)
+            return diffElement.ElementFromCollection2.Value;
 
-            if (diffElement.ElementFromCollection2.HasValue)
-                return diffElement.ElementFromCollection2.Value;
-
-            return default(T);
-        }
+        return default(T);
     }
 }
