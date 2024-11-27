@@ -5,7 +5,7 @@
 /// and is used for situations where you may or may not have a value.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
+public readonly struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
 {
     private readonly T _Value;
 
@@ -24,7 +24,7 @@ public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// <summary>
     /// Gets the value of this <see cref="Option{T}"/>.
     /// </summary>
-    public T Value
+    public readonly T Value
     {
         get
         {
@@ -75,7 +75,7 @@ public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public bool Equals(Option<T> other)
+    public readonly bool Equals(Option<T> other)
     {
         var equalityComparer = EqualityComparer<T?>.Default;
 
@@ -89,7 +89,7 @@ public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public bool Equals(T other)
+    public readonly bool Equals(T other)
     {
         if (!HasValue)
             return false;
@@ -142,7 +142,7 @@ public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// A 32-bit signed integer that is the hash code for this instance.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -159,7 +159,7 @@ public struct Option<T> : IEquatable<Option<T>>, IEquatable<T>
     /// A <see cref="T:System.String"/> containing a fully qualified type name.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override string ToString()
+    public override readonly string ToString()
     {
         string result;
 

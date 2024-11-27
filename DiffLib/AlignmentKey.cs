@@ -1,6 +1,6 @@
 ﻿namespace DiffLib;
 
-internal struct AlignmentKey : IEquatable<AlignmentKey>
+internal readonly struct AlignmentKey : IEquatable<AlignmentKey>
 {
     public AlignmentKey(int position1, int position2)
     {
@@ -18,9 +18,9 @@ internal struct AlignmentKey : IEquatable<AlignmentKey>
         get;
     }
 
-    public bool Equals(AlignmentKey other) => Position1 == other.Position1 && Position2 == other.Position2;
+    public readonly bool Equals(AlignmentKey other) => Position1 == other.Position1 && Position2 == other.Position2;
 
     public override bool Equals(object? obj) => !ReferenceEquals(null, obj) && (obj is AlignmentKey && Equals((AlignmentKey)obj));
 
-    public override int GetHashCode() => unchecked((Position1 * 397) ^ Position2);
+    public override readonly int GetHashCode() => unchecked((Position1 * 397) ^ Position2);
 }

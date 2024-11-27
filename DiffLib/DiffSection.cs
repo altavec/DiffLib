@@ -3,7 +3,7 @@ namespace DiffLib;
 /// <summary>
 /// This struct holds a section of matched or unmatch element portions from the two collectoins.
 /// </summary>
-public struct DiffSection : IEquatable<DiffSection>
+public readonly struct DiffSection : IEquatable<DiffSection>
 {
     /// <summary>
     /// Construct a new instance of <see cref="DiffSection"/>.
@@ -61,7 +61,7 @@ public struct DiffSection : IEquatable<DiffSection>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public bool Equals(DiffSection other)
+    public readonly bool Equals(DiffSection other)
     {
         return IsMatch == other.IsMatch && LengthInCollection1 == other.LengthInCollection1 && LengthInCollection2 == other.LengthInCollection2;
     }
@@ -87,7 +87,7 @@ public struct DiffSection : IEquatable<DiffSection>
     /// A 32-bit signed integer that is the hash code for this instance.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -127,7 +127,7 @@ public struct DiffSection : IEquatable<DiffSection>
     /// A <see cref="T:System.String"/> containing a fully qualified type name.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override string ToString()
+    public override readonly string ToString()
     {
         if (IsMatch)
             return $"{LengthInCollection1} matched";

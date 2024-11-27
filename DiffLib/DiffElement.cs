@@ -6,7 +6,7 @@
 /// <typeparam name="T">
 /// The type of elements from the two collections compared.
 /// </typeparam>
-public struct DiffElement<T> : IEquatable<DiffElement<T>> 
+public readonly struct DiffElement<T> : IEquatable<DiffElement<T>> 
 {
     /// <summary>
     /// Constructs a new instance of <see cref="DiffElement{T}"/>.
@@ -80,7 +80,7 @@ public struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public bool Equals(DiffElement<T> other)
+    public readonly bool Equals(DiffElement<T> other)
     {
         return 
             ElementIndexFromCollection1.Equals(other.ElementIndexFromCollection1) &&
@@ -133,7 +133,7 @@ public struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// A 32-bit signed integer that is the hash code for this instance.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         unchecked
         {
@@ -153,7 +153,7 @@ public struct DiffElement<T> : IEquatable<DiffElement<T>>
     /// A <see cref="T:System.String"/> containing a fully qualified type name.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override string ToString()
+    public override readonly string ToString()
     {
         switch (Operation)
         {
